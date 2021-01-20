@@ -3,7 +3,7 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 
 
 
-![alt text](https://img.shields.io/badge/Current_Version-0.3.0-yellow.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.0.0-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
 ![alt text](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat " ") 
@@ -27,7 +27,7 @@ The BladeOne implementation of the Renderable interface, allows the use of Blade
 $ composer require pinkcrab/bladeone-provider
 ````
 
-You will need to either replace the Renderable rules in ````bashconfig/dependencies.php```` or define BladeOne as the implenentation on a class by class basis.
+You will need to either replace the Renderable rules in ````config/dependencies.php```` or define BladeOne as the implenentation on a class by class basis.
 
 ````php
 // file config/dependencies.php
