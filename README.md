@@ -3,7 +3,7 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 
 
 
-![alt text](https://img.shields.io/badge/Current_Version-0.3.0-yellow.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.0.0-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
 ![alt text](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat " ") 
@@ -15,7 +15,7 @@ https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 
 ## Version ##
-**Release 0.1.0**
+**Release 1.0.0**
 
 
 ## Why? ##
@@ -27,12 +27,34 @@ The BladeOne implementation of the Renderable interface, allows the use of Blade
 $ composer require pinkcrab/bladeone-provider
 ````
 
-You will need to either replace the Renderable rules in ````bashconfig/dependencies.php```` or define BladeOne as the implenentation on a class by class basis.
+You will need to either replace the Renderable rules in ````config/dependencies.php```` or define BladeOne as the implenentation on a class by class basis.
 
 ````php
 // file config/dependencies.php
+use PinkCrab\BladeOne\BladeOne_Provider;
 
+return array(
+	// Update the Renderable Global Rule.
+	'*'               => array(
+		'substitutions' => array(
+			App::class        => App::get_instance(),
+			Renderable::class => BladeOne_Provider::class,
+		),
+	),
+
+    // If you do not plan on using the PHP_Engine you can remove this. 
+	/*PHP_Engine::class => array(
+		'shared'          => true,
+		'constructParams' => array( App::config( 'path', 'view' ) ),
+	), */
+    // We define our view and file paths for the instance of BladeOne
+    BladeOne_Provider::class => array(
+		'shared'          => true,
+		'constructParams' => array( App::config( 'path', 'view' ), App::config( 'path', 'upload_root/blade_cache' ) ),
+	)
+    ....
 ````
+> If the cache directory doesnt exist, BladeOne will create it for you. It is however best to do this yourself to be sure of permissions etc.
 
 ## Dependencies ##
 * [BladeOne](https://github.com/EFTEC/BladeOne)
