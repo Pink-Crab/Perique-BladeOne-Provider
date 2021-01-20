@@ -24,9 +24,67 @@ declare( strict_types=1 );
 
 namespace PinkCrab\BladeOne;
 
-use PinkCrab\Core\Services\Registration\Loader;
+use eftec\bladeone\BladeOne;
+use PinkCrab\Core\Interfaces\Renderable;
 
-class MetaBox {
+class BladeOne_Provider implements Renderable {
+
+	/**
+	 * BladeOne Instance
+	 *
+	 * @var BladeOne
+	 */
+	protected $blade;
+
+	/**
+	 * Creates an instance with blade one.
+	 *
+	 * @param BladeOne $blade
+	 */
+	final protected function __construct( BladeOne $blade ) {
+		$this->blade = $blade;
+	}
+
+	/**
+	 * Static constructor with BladeOne initalsation details
+	 *
+	 * @param string|array<mixed> $template_path If null then it uses (caller_folder)/views
+	 * @param string $compiled_path If null then it uses (caller_folder)/compiles
+	 * @param int $mode =[BladeOne::MODE_AUTO,BladeOne::MODE_DEBUG,BladeOne::MODE_FAST,BladeOne::MODE_SLOW][$i]
+	 * @return self
+	 */
+	public static function init(
+		$template_path = null,
+		string $compiled_path = null,
+		int $mode = 0
+	): self {
+		return new static( new BladeOne( $template_path, $compiled_path, $mode ) );
+	}
+
+	/**
+	 * Returns the current BladeOne isntance.
+	 *
+	 * @return BladeOne
+	 */
+	public function get_blade(): BladeOne {
+		return $this->blade;
+	}
+
+	/**
+	 * Display a view and its context.
+	 *
+	 * @param string $view
+	 * @param iterable<string, mixed> $data
+	 * @param bool $print
+	 * @return void|string
+	 */
+	public function render( string $view, iterable $data, bool $print = true ) {
+		if ( $print ) {
+			print $this->blade->run( $view, (array) $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		} else {
+			return $this->blade->run( $view, (array) $data );
+		}
+	}
 
 }
 
