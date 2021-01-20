@@ -1,0 +1,5 @@
+vendor
+wordpress
+composer.lock
+tests/files/cache/*
+!tests/files/cache/.gitkeep
