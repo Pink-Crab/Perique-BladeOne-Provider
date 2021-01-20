@@ -15,7 +15,7 @@ https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 
 ## Version ##
-**Release 0.1.0**
+**Release 1.0.0**
 
 
 ## Why? ##
@@ -31,8 +31,30 @@ You will need to either replace the Renderable rules in ````bashconfig/dependenc
 
 ````php
 // file config/dependencies.php
+use PinkCrab\BladeOne\BladeOne_Provider;
 
+return array(
+	// Update the Renderable Global Rule.
+	'*'               => array(
+		'substitutions' => array(
+			App::class        => App::get_instance(),
+			Renderable::class => BladeOne_Provider::class,
+		),
+	),
+
+    // If you do not plan on using the PHP_Engine you can remove this. 
+	/*PHP_Engine::class => array(
+		'shared'          => true,
+		'constructParams' => array( App::config( 'path', 'view' ) ),
+	), */
+    // We define our view and file paths for the instance of BladeOne
+    BladeOne_Provider::class => array(
+		'shared'          => true,
+		'constructParams' => array( App::config( 'path', 'view' ), App::config( 'path', 'upload_root/blade_cache' ) ),
+	)
+    ....
 ````
+> If the cache directory doesnt exist, BladeOne will create it for you. It is however best to do this yourself to be sure of permissions etc.
 
 ## Dependencies ##
 * [BladeOne](https://github.com/EFTEC/BladeOne)
