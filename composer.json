@@ -13,13 +13,13 @@
     }],
     "autoload": {
         "psr-4": {
-            "PinkCrab\\Registerables\\": "src"
+            "PinkCrab\\BladeOne\\": "src"
         },
         "files": []
     },
     "autoload-dev": {
         "psr-4": {
-            "PinkCrab\\Registerables\\Tests\\": "tests/"
+            "PinkCrab\\BladeOne\\Tests\\": "tests/"
         }
     },
     "repositories": [{
