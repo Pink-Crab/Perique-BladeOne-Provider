@@ -3,7 +3,7 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 
 
 
-![alt text](https://img.shields.io/badge/Current_Version-1.0.0-green.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.0.1-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
 ![alt text](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat " ") 
@@ -15,7 +15,7 @@ https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 
 ## Version ##
-**Release 1.0.0**
+**Release 1.0.1**
 
 
 ## Why? ##
