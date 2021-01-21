@@ -24,6 +24,8 @@ declare( strict_types=1 );
 
 namespace PinkCrab\BladeOne;
 
+use ReflectionClass;
+use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use PinkCrab\Core\Interfaces\Renderable;
 
@@ -34,7 +36,7 @@ class BladeOne_Provider implements Renderable {
 	 *
 	 * @var BladeOne
 	 */
-	protected $blade;
+	protected static $blade;
 
 	/**
 	 * Creates an instance with blade one.
@@ -42,7 +44,7 @@ class BladeOne_Provider implements Renderable {
 	 * @param BladeOne $blade
 	 */
 	final protected function __construct( BladeOne $blade ) {
-		$this->blade = $blade;
+		static::$blade = $blade;
 	}
 
 	/**
@@ -67,7 +69,7 @@ class BladeOne_Provider implements Renderable {
 	 * @return BladeOne
 	 */
 	public function get_blade(): BladeOne {
-		return $this->blade;
+		return static::$blade;
 	}
 
 	/**
@@ -80,10 +82,79 @@ class BladeOne_Provider implements Renderable {
 	 */
 	public function render( string $view, iterable $data, bool $print = true ) {
 		if ( $print ) {
-			print $this->blade->run( $view, (array) $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			print static::$blade->run( $view, (array) $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		} else {
-			return $this->blade->run( $view, (array) $data );
+			return static::$blade->run( $view, (array) $data );
 		}
+	}
+
+	/**
+	 * magic instanced method caller.
+	 *
+	 * @param string $method
+	 * @param array<mixed> $args
+	 * @return mixed
+	 * @throws BadMethodCallException
+	 */
+	public function __call( string $method, array $args = array() ) {
+		if ( ! $this->is_method( $method ) ) {
+			throw new BadMethodCallException( "{$method} is not a valid method on the BladeOne instance." );
+		}
+
+		return static::$blade->{$method}( ...$args );
+	}
+
+	/**
+	 * Magic static method caller.
+	 *
+	 * @param string $method
+	 * @param array<mixed> $args
+	 * @return mixed
+	 * @throws BadMethodCallException
+	 */
+	public static function __callStatic( string $method, array $args = array() ) {
+		if ( ! static::is_static_method( $method ) ) {
+			throw new BadMethodCallException( "{$method} is not a valid method on the BladeOne instance." );
+		}
+
+		return static::$blade::{$method}( ...$args );
+	}
+
+	/**
+	 * Checks if the passed method exists, is public and isnt static.
+	 *
+	 * @param string $method
+	 * @return bool
+	 */
+	protected function is_method( string $method ): bool {
+		$class_reflection = new ReflectionClass( static::$blade );
+
+		// Check method exists.
+		if ( ! $class_reflection->hasMethod( $method ) ) {
+			return false;
+		}
+
+		$method_reflection = $class_reflection->getMethod( $method );
+
+		return $method_reflection->isPublic() && ! $method_reflection->isStatic();
+	}
+
+	/**
+	 * Checks if the passed method exists, is public and IS static.
+	 *
+	 * @param string $method
+	 * @return bool
+	 */
+	protected static function is_static_method( string $method ): bool {
+		$class_reflection = new ReflectionClass( static::$blade );
+
+		// Check method exists.
+		if ( ! $class_reflection->hasMethod( $method ) ) {
+			return false;
+		}
+
+		$method_reflection = $class_reflection->getMethod( $method );
+		return $method_reflection->isPublic() && $method_reflection->isStatic();
 	}
 
 }

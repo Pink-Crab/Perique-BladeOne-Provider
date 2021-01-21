@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace PinkCrab\Registerables\Tests\Taxonomies;
 
 use WP_UnitTestCase;
+use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use PinkCrab\Core\Services\View\View;
 use PinkCrab\BladeOne\BladeOne_Provider;
@@ -60,16 +61,82 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		static::$blade->render( 'testview', array( 'foo' => 'rendered' ) );
 	}
 
-    /**
-     * Test the view is returned.
-     *
-     * @return void
-     */
+	/**
+	 * Test the view is returned.
+	 *
+	 * @return void
+	 */
 	public function test_can_return_a_view(): void {
 		$this->assertEquals(
 			'rendered',
 			static::$blade->render( 'testview', array( 'foo' => 'rendered' ), View::RETURN_VIEW )
 		);
+	}
+
+	/**
+	 * Test can call an instanced method.
+	 *
+	 * @return void
+	 */
+	public function test_can_call_instanced_methods(): void {
+		$this->assertStringContainsString(
+			'testview.blade.php',
+			static::$blade->getTemplateFile( 'testview' )
+		);
+	}
+
+	/**
+	 * Tests BadMethodCallException thrown is static methods called as instanced.
+	 * $this->staticMethod()
+	 *
+	 * @return void
+	 */
+	public function test_throws_exception_on_static_call_as_instanced(): void {
+		$this->expectException( BadMethodCallException::class );
+		static::$blade->enq( '1' );
+	}
+
+	/**
+	 * Tests BadMethodCallException thrown if method doesnt exist.
+	 *
+	 * @return void
+	 */
+	public function test_throws_exception_on_invalid_method_instanced(): void {
+		$this->expectException( BadMethodCallException::class );
+		static::$blade->FAKE( '1' );
+	}
+
+	/**
+	 * Test can call an instanced method.
+	 *
+	 * @return void
+	 */
+	public function test_can_call_static_methods(): void {
+		$this->assertStringContainsString(
+			'testview',
+			static::$blade::enq( 'testview<p>d</p>' )
+		);
+	}
+
+	/**
+	 * Tests BadMethodCallException thrown is static methods called as instanced.
+	 * $this->staticMethod()
+	 *
+	 * @return void
+	 */
+	public function test_throws_exception_on_instanced_call_as_static(): void {
+		$this->expectException( BadMethodCallException::class );
+		static::$blade::getTemplateFile( '1' );
+	}
+
+	/**
+	 * Tests BadMethodCallException thrown if method doesnt exist.
+	 *
+	 * @return void
+	 */
+	public function test_throws_exception_on_invalid_method_static(): void {
+		$this->expectException( BadMethodCallException::class );
+		static::$blade::FAKE( '1' );
 	}
 }
 
