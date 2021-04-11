@@ -3,19 +3,19 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 
 
 
-![alt text](https://img.shields.io/badge/Current_Version-1.0.1-green.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.0.2-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-
-![alt text](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat " ") 
-![alt text](https://img.shields.io/badge/PHPUnit-PASSING-brightgreen.svg?style=flat " ") 
-![alt text](https://img.shields.io/badge/PHCBF-WP_Extra-brightgreen.svg?style=flat " ") 
+![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
+[![codecov](https://codecov.io/gh/Pink-Crab/BladeOne_Provider/branch/master/graph/badge.svg)](https://codecov.io/gh/Pink-Crab/BladeOne_Provider)
 
 For more details please visit our docs.
 https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 
 ## Version ##
-**Release 1.0.1**
+**Release 1.0.2**
+
+> Supports and tested with the PinkCrab Plugin Framework versions 0.2.* -> 0.4.*
 
 
 ## Why? ##
@@ -69,4 +69,6 @@ return array(
 http://www.opensource.org/licenses/mit-license.html  
 
 ## Change Log ##
+
+* 1.0.2 - Bumped internal support for version 0.4.* of the Plugin Framework
 
