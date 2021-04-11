@@ -3,3 +3,5 @@ wordpress
 composer.lock
 tests/files/cache/*
 !tests/files/cache/.gitkeep
+coverage-report
+coverage.xml
