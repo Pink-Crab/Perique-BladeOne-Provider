@@ -138,5 +138,12 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		$this->expectException( BadMethodCallException::class );
 		static::$blade::FAKE( '1' );
 	}
+
+	public function test_can_use_html_trait(): void
+	{
+		$this->expectOutputRegex('/<button/');
+		$this->expectOutputRegex('/New Component/');
+		static::$blade->render( 'testhtml', array( 'foo' => 'rendered' ), View::PRINT_VIEW );
+	}
 }
 

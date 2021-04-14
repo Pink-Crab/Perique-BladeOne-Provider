@@ -27,6 +27,7 @@ namespace PinkCrab\BladeOne;
 use ReflectionClass;
 use BadMethodCallException;
 use eftec\bladeone\BladeOne;
+use eftec\bladeonehtml\BladeOneHtml;
 use PinkCrab\Core\Interfaces\Renderable;
 
 class BladeOne_Provider implements Renderable {
@@ -60,7 +61,11 @@ class BladeOne_Provider implements Renderable {
 		string $compiled_path = null,
 		int $mode = 0
 	): self {
-		return new static( new BladeOne( $template_path, $compiled_path, $mode ) );
+		$blade = new class() extends BladeOne{
+			use BladeOneHtml;
+		};
+
+		return new static( new $blade( $template_path, $compiled_path, $mode ) );
 	}
 
 	/**
