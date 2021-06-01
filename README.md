@@ -37,7 +37,6 @@ return array(
 	// Update the Renderable Global Rule.
 	'*' => array(
 		'substitutions' => array(
-			App::class        => App::get_instance(),
 			Renderable::class => BladeOne_Provider::init( 
 				App::config( 'path', 'view' ), // Template path
 				App::config( 'path', 'upload_root/blade_cache' ) // Cache location
