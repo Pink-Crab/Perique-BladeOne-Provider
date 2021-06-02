@@ -17,7 +17,7 @@ https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 > Supports and tested with the PinkCrab Perqiue Framework versions 0.5.*
 
-*For support of the intial PinkCrab Plugin Frameworks (version 0.2.\*, 0.3.\* and 0.4.\*) please use BladeOne_Provider 1.0.3*
+
 
 
 ## Why? ##
@@ -53,8 +53,8 @@ return array(
 * [BladeOne](https://github.com/EFTEC/BladeOne)
 
 ## Requires ##
-* [PinkCrab Perique Framework V0.5.0 and above.](https://github.com/Pink-Crab/Perqiue-Framework)
-
+* [PinkCrab Perique Framework V0.5.0 and above.](https://github.com/Pink-Crab/Perqiue-Framework)  
+*For support of the intial PinkCrab Plugin Frameworks (versions 0.2.\*, 0.3.\* and 0.4.\*) please use BladeOne_Provider 1.0.3*
 
 ## License ##
 
