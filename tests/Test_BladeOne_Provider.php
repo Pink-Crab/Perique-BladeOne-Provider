@@ -16,8 +16,8 @@ namespace PinkCrab\Registerables\Tests\Taxonomies;
 use WP_UnitTestCase;
 use BadMethodCallException;
 use eftec\bladeone\BladeOne;
-use PinkCrab\Core\Services\View\View;
 use PinkCrab\BladeOne\BladeOne_Provider;
+use PinkCrab\Perique\Services\View\View;
 
 class Test_BladeOne_Provider extends WP_UnitTestCase {
 
@@ -139,10 +139,9 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		static::$blade::FAKE( '1' );
 	}
 
-	public function test_can_use_html_trait(): void
-	{
-		$this->expectOutputRegex('/<button/');
-		$this->expectOutputRegex('/New Component/');
+	public function test_can_use_html_trait(): void {
+		$this->expectOutputRegex( '/<button/' );
+		$this->expectOutputRegex( '/New Component/' );
 		static::$blade->render( 'testhtml', array( 'foo' => 'rendered' ), View::PRINT_VIEW );
 	}
 }

@@ -28,7 +28,7 @@ use ReflectionClass;
 use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use eftec\bladeonehtml\BladeOneHtml;
-use PinkCrab\Core\Interfaces\Renderable;
+use PinkCrab\Perique\Interfaces\Renderable;
 
 class BladeOne_Provider implements Renderable {
 
