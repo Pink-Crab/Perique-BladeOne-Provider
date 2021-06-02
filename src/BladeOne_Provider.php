@@ -58,7 +58,7 @@ class BladeOne_Provider implements Renderable {
 	 */
 	public static function init(
 		$template_path = null,
-		string $compiled_path = null,
+		?string $compiled_path = null,
 		int $mode = 0
 	): self {
 		$blade = new class() extends BladeOne{
