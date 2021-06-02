@@ -53,7 +53,7 @@ return array(
 * [BladeOne](https://github.com/EFTEC/BladeOne)
 
 ## Requires ##
-* [PinkCrab Framework V0.2.0 and above.](https://github.com/Pink-Crab/Framework__core)
+* [PinkCrab Perique Framework V0.5.0 and above.](https://github.com/Pink-Crab/Perqiue-Framework)
 
 
 ## License ##
