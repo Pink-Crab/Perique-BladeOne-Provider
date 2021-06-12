@@ -62,7 +62,8 @@ return array(
 http://www.opensource.org/licenses/mit-license.html  
 
 ## Change Log ##
-* 1.1.0 - Moved to the new Perique nameing.
-* 1.0.3 - Included the HTML extenstion by default.
+* 1.1.1 - Updated composer.json to support Perique 1.* and set github to run actions on PR & Merge to Dev
+* 1.1.0 - Moved to the new Perique naming.
+* 1.0.3 - Included the HTML extension by default.
 * 1.0.2 - Bumped internal support for version 0.4.* of the Plugin Framework
 
