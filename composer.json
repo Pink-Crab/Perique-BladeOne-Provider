@@ -38,7 +38,7 @@
     },
     "require": {
         "php": ">=7.1.0",
-        "pinkcrab/perique-framework-core": "0.*",
+        "pinkcrab/perique-framework-core": "0.* || 1.*",
         "eftec/bladeonehtml": "^1.7"
     },
     "scripts": {

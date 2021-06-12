@@ -3,7 +3,7 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 
 
 
-![alt text](https://img.shields.io/badge/Current_Version-1.1.0-green.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.1.1-green.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/BladeOne_Provider/branch/master/graph/badge.svg)](https://codecov.io/gh/Pink-Crab/BladeOne_Provider)
@@ -13,11 +13,11 @@ https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 
 ## Version ##
-**Release 1.1.0**
+**Release 1.1.1**
 
-> Supports and tested with the PinkCrab Perqiue Framework versions 0.5.*
+> Supports and tested with the PinkCrab Perique Framework versions 0.5.* -> 1.*
 
-*For support of the intial PinkCrab Plugin Frameworks (version 0.2.\*, 0.3.\* and 0.4.\*) please use BladeOne_Provider 1.0.3*
+*For support of the initial PinkCrab Plugin Frameworks (version 0.2.\*, 0.3.\* and 0.4.\*) please use BladeOne_Provider 1.0.3*
 
 
 ## Why? ##
