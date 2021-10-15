@@ -209,7 +209,7 @@ class BladeOne_Provider implements Renderable {
 	/**
 	 * Define a class with a namespace
 	 *
-	 * @param string$alias_name
+	 * @param string $alias_name
 	 * @param string $class_with_namespace
 	 * @return self
 	 */
