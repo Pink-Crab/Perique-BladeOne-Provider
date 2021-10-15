@@ -8,10 +8,10 @@ declare(strict_types=1);
  * @since 0.1.0
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\Core
+ * @package PinkCrab\BladeOne
  */
 
-namespace PinkCrab\Registerables\Tests\Taxonomies;
+namespace PinkCrab\BladeOne\Tests;
 
 use WP_UnitTestCase;
 use BadMethodCallException;
