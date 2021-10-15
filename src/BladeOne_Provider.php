@@ -3,7 +3,7 @@
 declare( strict_types=1 );
 
 /**
- * A simple wrapper for getting and sanitizing all http requests.
+ * Implementation of BladeOne for the PinkCrab Perique frameworks Renderable interface
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@ declare( strict_types=1 );
  *
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\Registerables
+ * @package PinkCrab\BladeOne_Provider
  */
 
 namespace PinkCrab\BladeOne;
@@ -28,6 +28,7 @@ use ReflectionClass;
 use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use eftec\bladeonehtml\BladeOneHtml;
+use PinkCrab\BladeOne\PinkCrab_BladeOne;
 use PinkCrab\Perique\Interfaces\Renderable;
 
 class BladeOne_Provider implements Renderable {
@@ -42,9 +43,9 @@ class BladeOne_Provider implements Renderable {
 	/**
 	 * Creates an instance with blade one.
 	 *
-	 * @param BladeOne $blade
+	 * @param PinkCrab_BladeOne $blade
 	 */
-	final protected function __construct( BladeOne $blade ) {
+	final public function __construct( PinkCrab_BladeOne $blade ) {
 		static::$blade = $blade;
 	}
 
@@ -61,15 +62,11 @@ class BladeOne_Provider implements Renderable {
 		?string $compiled_path = null,
 		int $mode = 0
 	): self {
-		$blade = new class() extends BladeOne{
-			use BladeOneHtml;
-		};
-
-		return new static( new $blade( $template_path, $compiled_path, $mode ) );
+		return new static( new PinkCrab_BladeOne( $template_path, $compiled_path, $mode ) );
 	}
 
 	/**
-	 * Returns the current BladeOne isntance.
+	 * Returns the current BladeOne instance.
 	 *
 	 * @return BladeOne
 	 */
@@ -160,6 +157,130 @@ class BladeOne_Provider implements Renderable {
 
 		$method_reflection = $class_reflection->getMethod( $method );
 		return $method_reflection->isPublic() && $method_reflection->isStatic();
+	}
+
+	/**
+	 * Sets if piping is enabled in templates.
+	 *
+	 * @param bool $bool
+	 * @return self
+	 */
+	public function allow_pipe( bool $bool = true ): self {
+		static::$blade->pipeEnable = $bool; //phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		return $this;
+	}
+
+	/**
+	 * Register a handler for custom directives.
+	 *
+	 * @param string   $name
+	 * @param callable $handler
+	 * @return self
+	 */
+	public function directive( string $name, callable $handler ): self {
+		static::$blade->directive( $name, $handler );
+		return $this;
+	}
+
+	/**
+	 * Register a handler for custom directives for run at runtime
+	 *
+	 * @param string   $name
+	 * @param callable $handler
+	 * @return self
+	 */
+	public function directive_rt( $name, callable $handler ): self {
+		static::$blade->directiveRT( $name, $handler );
+		return $this;
+	}
+
+	/**
+	 * Define a template alias
+	 *
+	 * @param string      $view  example "folder.template"
+	 * @param string|null $alias example "mynewop". If null then it uses the name of the template.
+	 * @return self
+	 */
+	public function add_include( $view, $alias = null ): self {
+		static::$blade->addInclude( $view, $alias );
+		return $this;
+	}
+
+	/**
+	 * Define a class with a namespace
+	 *
+	 * @param string$alias_name
+	 * @param string $class_with_namespace
+	 * @return self
+	 */
+	public function add_alias_classes( $alias_name, $class_with_namespace ): self {
+		static::$blade->addAliasClasses( $alias_name, $class_with_namespace );
+		return $this;
+	}
+
+	/**
+	 * Set the compile mode
+	 *
+	 * @param int $mode BladeOne::MODE_AUTO, BladeOne::MODE_DEBUG, BladeOne::MODE_FAST, BladeOne::MODE_SLOW
+	 * @return self
+	 */
+	public function set_mode( int $mode ): self {
+		static::$blade->setMode( $mode );
+		return $this;
+	}
+
+	/**
+	 * Adds a global variable. If <b>$var_name</b> is an array then it merges all the values.
+	 * <b>Example:</b>
+	 * <pre>
+	 * $this->share('variable',10.5);
+	 * $this->share('variable2','hello');
+	 * // or we could add the two variables as:
+	 * $this->share(['variable'=>10.5,'variable2'=>'hello']);
+	 * </pre>
+	 *
+	 * @param string|array<string, mixed> $var_name It is the name of the variable or it is an associative array
+	 * @param mixed        $value
+	 * @return $this
+	 */
+	public function share( $var_name, $value = null ): self {
+		static::$blade->share( $var_name, $value );
+		return $this;
+	}
+
+	/**
+	 * Sets the function used for resolving classes with inject.
+	 *
+	 * @param callable $function
+	 * @return $this
+	 */
+	public function set_inject_resolver( callable $function ): self {
+		static::$blade->setInjectResolver( $function );
+		return $this;
+	}
+
+	/**
+	 * Set the file extension for the template files.
+	 * It must includes the leading dot e.g. .blade.php
+	 *
+	 * @param string $file_extension Example: .prefix.ext
+	 * @return $this
+	 */
+	public function set_file_extension( string $file_extension ): self {
+		static::$blade->setFileExtension( $file_extension );
+		return $this;
+	}
+
+	/**
+	 * Set the file extension for the compiled files.
+	 * Including the leading dot for the extension is required, e.g. .bladec
+	 *
+	 * @param string $file_extension
+	 * @return $this
+	 */
+	public function set_compiled_extension( string $file_extension ): self {
+		static::$blade->setCompiledExtension( $file_extension );
+		return $this;
 	}
 
 }
