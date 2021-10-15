@@ -38,8 +38,9 @@
     },
     "require": {
         "php": ">=7.1.0",
-        "pinkcrab/perique-framework-core": "0.* || 1.*",
-        "eftec/bladeonehtml": "^1.7"
+        "pinkcrab/perique-framework-core": "1.*",
+        "eftec/bladeone": "^4.1",
+        "eftec/bladeonehtml": "^2.0"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always --testdox --coverage-clover clover.xml",
