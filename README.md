@@ -8,9 +8,6 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 ![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-BladeOne-Provider/branch/master/graph/badge.svg?token=F7W4S9O5IR)](https://codecov.io/gh/Pink-Crab/Perique-BladeOne-Provider)
 
-For more details please visit our docs.
-https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
-
 
 ## Version ##
 **Release 1.2.0**
@@ -43,8 +40,8 @@ The simplest way to enable BladeOne is to use the `BladeOne_Bootstrap` helper cl
 BladeOne_Bootstrap::use( $views_path, $cache_path, $blade_mode, $blade_class );
 
 // Bootstrap for Perique follows as normal.. 
-	$app = ( new App_Factory() )->with_wp_dice( true )
-		->.....
+$app = ( new App_Factory() )->with_wp_dice( true )
+	->.....
 ```
 > **\$blade_mode** :: For more details on the options please [see official docs](https://github.com/EFTEC/BladeOne/blob/d3e1efa1c6f776aa87fe47164d77e7ea67fc196f/lib/BladeOne.php#L208 )   
 > **\$blade_class** :: This should be a the class name or instance of a class that extends `PinkCrab_BladeOne::class` this allows for the creation of custom components and extending BladeOne in general. For more details please [see official docs](https://github.com/EFTEC/BladeOne/wiki/Extending-the-class) Passing nothing or an invalid type will just use the default PinkCrab_BladeOne.
@@ -156,7 +153,7 @@ Calling this will allow you to create custom directives
 // Directive at Run Time Example
 $provider->directive_rt('datetime', function ($expression) {
 	// Just print/echo the value.
-    return "echo $expression->format('m/d/Y H:i');";
+	return "echo $expression->format('m/d/Y H:i');";
 });
 ```
 ```html
@@ -202,7 +199,7 @@ $class->render('longpath', ['data' => $data]);
  * @param string $class_with_namespace
  * @return self
  */
-	public function add_alias_classes( $alias_name, $class_with_namespace ): self{}
+public function add_alias_classes( $alias_name, $class_with_namespace ): self{}
 ```
 This allows for the creation of simpler and short class names for use in templates.
 ```php
@@ -256,10 +253,11 @@ $provider->share('GLOBAL_foo', [$this->injected_dep, 'method']);
  * Set the compile mode
  *
  * @param int $mode 
- * 			BladeOne::MODE_AUTO, 
- * 			BladeOne::MODE_DEBUG, 
- * 			BladeOne::MODE_FAST, 
- * 			BladeOne::MODE_SLOW
+ * 	Constants
+ *	BladeOne::MODE_AUTO, 
+ *	BladeOne::MODE_DEBUG, 
+ *	BladeOne::MODE_FAST, 
+ *	BladeOne::MODE_SLOW
  * @return self
  */
 	public function set_mode( int $mode ): self{}
