@@ -3,7 +3,7 @@
 declare( strict_types=1 );
 
 /**
- * A simple wrapper for getting and sanitizing all http requests.
+ * Implementation of BladeOne for the PinkCrab Perique frameworks Renderable interface
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,7 +19,7 @@ declare( strict_types=1 );
  *
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\Registerables
+ * @package PinkCrab\BladeOne_Provider
  */
 
 namespace PinkCrab\BladeOne;
@@ -28,6 +28,7 @@ use ReflectionClass;
 use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use eftec\bladeonehtml\BladeOneHtml;
+use PinkCrab\BladeOne\PinkCrab_BladeOne;
 use PinkCrab\Perique\Interfaces\Renderable;
 
 class BladeOne_Provider implements Renderable {
@@ -42,9 +43,9 @@ class BladeOne_Provider implements Renderable {
 	/**
 	 * Creates an instance with blade one.
 	 *
-	 * @param BladeOne $blade
+	 * @param PinkCrab_BladeOne $blade
 	 */
-	final protected function __construct( BladeOne $blade ) {
+	final public function __construct( PinkCrab_BladeOne $blade ) {
 		static::$blade = $blade;
 	}
 
@@ -61,15 +62,11 @@ class BladeOne_Provider implements Renderable {
 		?string $compiled_path = null,
 		int $mode = 0
 	): self {
-		$blade = new class() extends BladeOne{
-			use BladeOneHtml;
-		};
-
-		return new static( new $blade( $template_path, $compiled_path, $mode ) );
+		return new static( new PinkCrab_BladeOne( $template_path, $compiled_path, $mode ) );
 	}
 
 	/**
-	 * Returns the current BladeOne isntance.
+	 * Returns the current BladeOne instance.
 	 *
 	 * @return BladeOne
 	 */
