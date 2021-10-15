@@ -39,7 +39,7 @@ abstract class Abstract_BladeOne_Config implements Hookable {
 	/**
 	 * The current view model.
 	 *
-	 * @var BladeOne_Provider
+	 * @var BladeOne_Provider|null
 	 */
 	protected $renderable;
 
@@ -50,7 +50,7 @@ abstract class Abstract_BladeOne_Config implements Hookable {
 	/**
 	 * Sets renderable from DI when constructing.
 	 *
-	 * @param PinkCrab\Perique\Interfaces\BladeOne_Provider $renderable
+	 * @param BladeOne_Provider $renderable
 	 * @return void
 	 */
 	public function set_renderable( BladeOne_Provider $renderable ): void {

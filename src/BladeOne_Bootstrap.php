@@ -41,7 +41,7 @@ class BladeOne_Bootstrap {
 	 * @param string $template_path
 	 * @param string|null $compiled_path
 	 * @param int $mode
-	 * @param class_name|BladeOne $blade
+	 * @param class-string|BladeOne $blade
 	 * @return void
 	 */
 	public static function use( $template_path = null, ?string $compiled_path = null, int $mode = 0, $blade = null ) {
@@ -89,7 +89,7 @@ class BladeOne_Bootstrap {
 	 * Gets the class used for bladeone instance
 	 *
 	 * @param mixed $blade
-	 * @return PinkCrab_BladeOne::class
+	 * @return class-string
 	 */
 	protected static function get_blade_instance( $blade ): string {
 		// If we have a populated instance of BladeOne, get the full class name.

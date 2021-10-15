@@ -43,7 +43,7 @@ class BladeOne_Provider implements Renderable {
 	/**
 	 * Creates an instance with blade one.
 	 *
-	 * @param BladeOne $blade
+	 * @param PinkCrab_BladeOne $blade
 	 */
 	final public function __construct( PinkCrab_BladeOne $blade ) {
 		static::$blade = $blade;
@@ -66,7 +66,7 @@ class BladeOne_Provider implements Renderable {
 	}
 
 	/**
-	 * Returns the current BladeOne isntance.
+	 * Returns the current BladeOne instance.
 	 *
 	 * @return BladeOne
 	 */
