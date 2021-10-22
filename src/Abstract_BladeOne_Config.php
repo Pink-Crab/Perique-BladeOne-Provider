@@ -44,7 +44,7 @@ abstract class Abstract_BladeOne_Config implements Hookable {
 	protected $renderable;
 
 	final public function register( Hook_Loader $loader ): void {
-		$loader->action( 'init', array( $this, 'configure_blade_handler' ), 1, 2 );
+		$loader->action( 'wp_loaded', array( $this, 'configure_blade_handler' ), 10, 2 );
 	}
 
 	/**
