@@ -97,7 +97,8 @@ class Test_As_Application extends WP_UnitTestCase {
 				$data_via_reference['mock_controller'] = $container->create( Mock_Controller::class );
 			}
 		);
-		do_action( 'init' );
+		do_action( 'init' ); // Boots Perique
+		do_action('wp_loaded'); // Triggers the blade one config once all is loaded (see issue 13)
 
 		// Ensure the mock controller added to registration is populated with BladeOne for view.
 		$this->assertInstanceOf( Mock_Controller::class, $data_via_reference['mock_controller'] );
