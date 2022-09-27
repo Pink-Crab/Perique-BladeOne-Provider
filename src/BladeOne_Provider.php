@@ -24,12 +24,16 @@ declare( strict_types=1 );
 
 namespace PinkCrab\BladeOne;
 
+use Exception;
 use ReflectionClass;
 use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use eftec\bladeonehtml\BladeOneHtml;
 use PinkCrab\BladeOne\PinkCrab_BladeOne;
 use PinkCrab\Perique\Interfaces\Renderable;
+use PinkCrab\Perique\Services\View\View_Model;
+use PinkCrab\Perique\Services\View\Component\Component;
+use PinkCrab\Perique\Services\View\Component\Component_Compiler;
 
 class BladeOne_Provider implements Renderable {
 
@@ -41,6 +45,13 @@ class BladeOne_Provider implements Renderable {
 	protected static $blade;
 
 	/**
+	 * Access to the component compiler.
+	 *
+	 * @var Component_Compiler
+	 */
+	protected $component_compiler;
+
+	/**
 	 * Creates an instance with blade one.
 	 *
 	 * @param PinkCrab_BladeOne $blade
@@ -50,7 +61,7 @@ class BladeOne_Provider implements Renderable {
 	}
 
 	/**
-	 * Static constructor with BladeOne initalsation details
+	 * Static constructor with BladeOne initialisation details
 	 *
 	 * @param string|array<mixed> $template_path If null then it uses (caller_folder)/views
 	 * @param string $compiled_path If null then it uses (caller_folder)/compiles
@@ -75,6 +86,16 @@ class BladeOne_Provider implements Renderable {
 	}
 
 	/**
+	 * Sets the component compiler.
+	 *
+	 * @param Component_Compiler $compiler
+	 * @return void
+	 */
+	public function set_component_compiler( Component_Compiler $compiler ): void {
+		$this->component_compiler = $compiler;
+	}
+
+	/**
 	 * Display a view and its context.
 	 *
 	 * @param string $view
@@ -88,6 +109,34 @@ class BladeOne_Provider implements Renderable {
 		} else {
 			return static::$blade->run( $view, (array) $data );
 		}
+	}
+
+	/**
+	 * Renders a view Model
+	 *
+	 * @param View_Model $view_model
+	 * @return string|void
+	 */
+	public function view_model( View_Model $view_model, bool $print = true ) {
+		return $this->render( str_replace( array( '/', '\\' ), '.', $view_model->template() ), $view_model->data(), $print );
+	}
+
+		/**
+	 * Renders a component.
+	 *
+	 * @param Component $component
+	 * @return string|void
+	 */
+	public function component( Component $component, bool $print = true ) {
+
+		// Throw exception of no compiler passed.
+		if ( ! is_a( $this->component_compiler, Component_Compiler::class ) ) {
+			throw new Exception( 'No component compiler passed to BladeOne' );
+		}
+
+		// Compile the component.
+		$compiled = $this->component_compiler->compile( $component );
+		return $this->render( str_replace( array( '/', '\\' ), '.', $compiled->template() ), $compiled->data(), $print );
 	}
 
 	/**
