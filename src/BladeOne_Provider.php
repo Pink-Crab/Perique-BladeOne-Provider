@@ -131,7 +131,7 @@ class BladeOne_Provider implements Renderable {
 
 		// Throw exception of no compiler passed.
 		if ( ! is_a( $this->component_compiler, Component_Compiler::class ) ) {
-			throw new Exception( 'No component compiler passed to PHP_Engine' );
+			throw new Exception( 'No component compiler passed to BladeOne' );
 		}
 
 		// Compile the component.

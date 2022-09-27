@@ -314,5 +314,23 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 			$input
 		);
 	}
+
+	/** @testdox An exception should be thrown attempting to render a component with the compiler being set to the provider. */
+	public function test_exception_rendering_component_with_compiler_set(): void {
+		$provider = $this->get_provider();
+
+		$this->expectException( \Exception::class );
+		$this->expectExceptionMessage( 'No component compiler passed to BladeOne' );
+
+		$provider->component(
+			new Input(
+				'input_name',
+				'input_id',
+				'input_value',
+				'text'
+			),
+			false
+		);
+	}
 }
 
