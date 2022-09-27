@@ -40,8 +40,8 @@
     "require": {
         "php": ">=7.1.0",
         "pinkcrab/perique-framework-core": "1.*",
-        "eftec/bladeone": "^4.6",
-        "eftec/bladeonehtml": "^2.3"
+        "eftec/bladeone": "4.*",
+        "eftec/bladeonehtml": "2.*"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always --testdox --coverage-clover clover.xml",
