@@ -19,6 +19,9 @@ use eftec\bladeone\BladeOne;
 use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\BladeOne\BladeOne_Provider;
 use PinkCrab\Perique\Services\View\View;
+use PinkCrab\BladeOne\Tests\Fixtures\Input;
+use PinkCrab\Perique\Services\View\View_Model;
+use PinkCrab\Perique\Services\View\Component\Component_Compiler;
 
 class Test_BladeOne_Provider extends WP_UnitTestCase {
 
@@ -265,6 +268,69 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		$provider = $this->get_provider();
 		$provider->set_compiled_extension( '.bar' );
 		$this->assertEquals( '.bar', $provider->get_blade()->getCompiledExtension() );
+	}
+
+	/** @testdox It should be possible to render a Component */
+	public function test_can_render_component(): void {
+		$compiler = new Component_Compiler( 'components' );
+		$provider = $this->get_provider();
+		$provider->set_component_compiler( $compiler );
+
+		$input = $provider->component(
+			new Input(
+				'input_name',
+				'input_id',
+				'input_value',
+				'text'
+			),
+			false
+		);
+
+		$this->assertEquals(
+			'<input name="input_name" id="input_id" value="input_value" type="text" />',
+			$input
+		);
+	}
+
+	/** @testdox It should be possible to render a View Model */
+	public function test_can_render_view_model(): void {
+		$provider = $this->get_provider();
+
+		$input = $provider->view_model(
+			new View_Model(
+				'components.input',
+				array(
+					'name'  => 'input_name',
+					'id'    => 'input_id',
+					'value' => 'input_value',
+					'type'  => 'text'
+				)
+			),
+			false
+		);
+
+		$this->assertEquals(
+			'<input name="input_name" id="input_id" value="input_value" type="text" />',
+			$input
+		);
+	}
+
+	/** @testdox An exception should be thrown attempting to render a component with the compiler being set to the provider. */
+	public function test_exception_rendering_component_with_compiler_set(): void {
+		$provider = $this->get_provider();
+
+		$this->expectException( \Exception::class );
+		$this->expectExceptionMessage( 'No component compiler passed to BladeOne' );
+
+		$provider->component(
+			new Input(
+				'input_name',
+				'input_id',
+				'input_value',
+				'text'
+			),
+			false
+		);
 	}
 }
 

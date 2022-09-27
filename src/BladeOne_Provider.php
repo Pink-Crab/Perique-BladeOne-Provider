@@ -118,7 +118,7 @@ class BladeOne_Provider implements Renderable {
 	 * @return string|void
 	 */
 	public function view_model( View_Model $view_model, bool $print = true ) {
-		return $this->render( $view_model->template(), $view_model->data(), $print );
+		return $this->render( str_replace( array( '/', '\\' ), '.', $view_model->template() ), $view_model->data(), $print );
 	}
 
 		/**
@@ -131,12 +131,12 @@ class BladeOne_Provider implements Renderable {
 
 		// Throw exception of no compiler passed.
 		if ( ! is_a( $this->component_compiler, Component_Compiler::class ) ) {
-			throw new Exception( 'No component compiler passed to PHP_Engine' );
+			throw new Exception( 'No component compiler passed to BladeOne' );
 		}
 
 		// Compile the component.
 		$compiled = $this->component_compiler->compile( $component );
-		return $this->render( $compiled->template(), $compiled->data(), $print );
+		return $this->render( str_replace( array( '/', '\\' ), '.', $compiled->template() ), $compiled->data(), $print );
 	}
 
 	/**
