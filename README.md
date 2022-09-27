@@ -347,7 +347,7 @@ App::view()->engine()->some_method($data);
 http://www.opensource.org/licenses/mit-license.html  
 
 ## Change Log ##
-* 1.3.0 - Updated to match Perique 1.2.0 with both Component and View_Model support.
+* 1.3.0 - Updated to match Perique 1.2.0 with both Component and View_Model support. Dropped PHP 7.1 support.
 * 1.2.2 - Ensure that BladeOne is only loaded once wp is loaded. This avoids issues where template globals are registered before WP has finished loading. See issue #13
 * 1.2.1 - Updated Readme and bumped BladeOne and BladeOneHTMl to the latest versions, now only compatible with Perique 1.\*.\*
 * 1.2.0 - Comes with bootloader and ability to configure internal blade instance and use custom implementations to add directives, components and config in general
