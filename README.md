@@ -339,7 +339,7 @@ App::view()->engine()->some_method($data);
 
 ## Requires ##
 * [PinkCrab Perique Framework V1.2.0 and above.](https://github.com/Pink-Crab/Perqiue-Framework)
-
+* PHP7.2+
 
 ## License ##
 
