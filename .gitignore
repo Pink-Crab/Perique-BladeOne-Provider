@@ -6,3 +6,4 @@ tests/files/cache/*
 coverage-report
 coverage.xml
 compiles
+.phpunit.result.cache
