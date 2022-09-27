@@ -281,6 +281,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 				'input_name',
 				'input_id',
 				'input_value',
+				'text'
 			),
 			false
 		);
