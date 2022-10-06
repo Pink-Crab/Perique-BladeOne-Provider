@@ -16,11 +16,13 @@ namespace PinkCrab\BladeOne\Tests;
 use WP_UnitTestCase;
 use eftec\bladeone\BladeOne;
 use Gin0115\WPUnit_Helpers\Objects;
+use PinkCrab\Perique\Application\App;
 use PinkCrab\Perique\Application\Hooks;
 use PinkCrab\BladeOne\BladeOne_Provider;
 use PinkCrab\BladeOne\PinkCrab_BladeOne;
 use PinkCrab\Perique\Services\View\View;
 use PinkCrab\BladeOne\BladeOne_Bootstrap;
+use PinkCrab\BladeOne\Tests\Fixtures\Input;
 use PinkCrab\Perique\Interfaces\Renderable;
 use PinkCrab\Perique\Application\App_Factory;
 use PinkCrab\Perique\Services\View\PHP_Engine;
@@ -30,6 +32,17 @@ use PinkCrab\BladeOne\Tests\Fixtures\Mock_Blade_Config;
 use PinkCrab\BladeOne\Tests\Fixtures\Mock_Custom_Blade_One_Instance;
 
 class Test_As_Application extends WP_UnitTestCase {
+
+	use App_Helper_Trait;
+
+	/**
+	 * On tear down, unset app instance.
+	 *
+	 * @return void
+	 */
+	public function tearDown(): void {
+		$this->unset_app_instance();
+	}
 
 	/** @testdox It should be possible to use bladeone and configure its use as part of the Perique Boot process. */
 	public function test_run(): void {
@@ -98,7 +111,7 @@ class Test_As_Application extends WP_UnitTestCase {
 			}
 		);
 		do_action( 'init' ); // Boots Perique
-		do_action('wp_loaded'); // Triggers the blade one config once all is loaded (see issue 13)
+		do_action( 'wp_loaded' ); // Triggers the blade one config once all is loaded (see issue 13)
 
 		// Ensure the mock controller added to registration is populated with BladeOne for view.
 		$this->assertInstanceOf( Mock_Controller::class, $data_via_reference['mock_controller'] );
@@ -145,4 +158,28 @@ class Test_As_Application extends WP_UnitTestCase {
 			$rules[ BladeOne_Provider::class ]['substitutions'][ PinkCrab_BladeOne::class ]
 		);
 	}
+
+	/** @testdox It should be possible to render a component nested inside another component */
+	public function test_can_render_nested_component(): void {
+		$this->unset_app_instance();
+		$app = $this->pre_populated_app_provider();
+
+		$value = $app::view()->render( 'testnestedcomponents', array(), false );
+
+		$this->assertStringContainsString(
+			'<input name="a" id="b" value="c" type="d" />',
+			$value
+		);
+	}
+
+	/** @testdox It should be possible to render an nested view model using $this->view_model($instance) */
+	public function test_can_render_nested_view_model(): void {
+		$this->unset_app_instance();
+		$app = $this->pre_populated_app_provider();
+
+		$value = $app::view()->render( 'testrendersviewmodel', array(), false );
+
+		$this->assertStringContainsString( 'woo', $value );
+	}
+
 }
