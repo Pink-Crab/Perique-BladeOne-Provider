@@ -303,7 +303,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 					'name'  => 'input_name',
 					'id'    => 'input_id',
 					'value' => 'input_value',
-					'type'  => 'text'
+					'type'  => 'text',
 				)
 			),
 			false
@@ -332,5 +332,8 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 			false
 		);
 	}
+
+	
+
 }
 

@@ -26,7 +26,39 @@ namespace PinkCrab\BladeOne;
 
 use eftec\bladeone\BladeOne;
 use eftec\bladeonehtml\BladeOneHtml;
+use PinkCrab\Perique\Application\App;
+use PinkCrab\Perique\Services\View\View;
+use PinkCrab\Perique\Services\View\View_Model;
+use PinkCrab\Perique\Services\View\Component\Component;
 
 class PinkCrab_BladeOne extends BladeOne {
 	use BladeOneHtml;
+
+	/**
+	 * Renders  component
+	 *
+	 * @param Component $component
+	 * @param bool $print
+	 * @return string|void
+	 */
+	public function component( Component $component, bool $print = true ) {
+		/** @var View */
+		$view = App::view();
+
+		return $view->component( $component, $print );
+	}
+
+	/**
+	 * Renders a view model
+	 *
+	 * @param View_Model $view_model
+	 * @param bool $print Print or Return the HTML
+	 * @return string|void
+	 */
+	public function view_model( View_Model $view_model, bool $print = true ) {
+		/** @var View */
+		$view = App::view();
+
+		return $view->view_model( $view_model, $print );
+	}
 }
