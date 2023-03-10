@@ -18,6 +18,7 @@ use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\BladeOne\BladeOne_Provider;
+use PinkCrab\BladeOne\PinkCrab_BladeOne;
 use PinkCrab\Perique\Services\View\View;
 use PinkCrab\BladeOne\Tests\Fixtures\Input;
 use PinkCrab\Perique\Services\View\View_Model;
@@ -364,5 +365,14 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		$blade = $provider->get_blade();
 		$this->assertArrayHasKey( 'component', Objects::get_property( $blade, 'customDirectivesRT' ) );
 		$this->assertArrayHasKey( 'viewModel', Objects::get_property( $blade, 'customDirectivesRT' ) );
+	}
+
+	/** @testdox It should be possible to get the view base path if defined as a single value or first of an array */
+	public function test_get_view_base_path(): void {
+		// Single path
+		$this->assertEquals( 'foo.bar', BladeOne_Provider::init('foo.bar')->base_view_path() );
+
+		// Array of paths
+		$this->assertEquals( 'bar.foo', BladeOne_Provider::init( array( 'bar.foo', 'foo.bar' ) )->base_view_path() );
 	}
 }

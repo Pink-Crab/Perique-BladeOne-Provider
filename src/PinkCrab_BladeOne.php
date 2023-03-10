@@ -95,6 +95,15 @@ class PinkCrab_BladeOne extends BladeOne {
 	}
 
 	/**
+	 * Returns the template paths
+	 *
+	 * @return string[]
+	 */
+	public function get_template_paths(): array {
+		return $this->templatePath; //phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	}
+
+	/**
 	 * Escape HTML entities in a string.
 	 *
 	 * @param int|float|string|null|mixed[]|object $value
