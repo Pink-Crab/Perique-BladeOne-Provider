@@ -178,7 +178,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		);
 
 		$blade = $provider->get_blade();
-		$this->assertCount( 1, Objects::get_property( $blade, 'customDirectives' ) );
+		$this->assertCount( 3, Objects::get_property( $blade, 'customDirectives' ) );
 		$this->assertArrayHasKey( 'foo', Objects::get_property( $blade, 'customDirectives' ) );
 	}
 
@@ -193,7 +193,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		);
 
 		$blade = $provider->get_blade();
-		$this->assertCount( 1, Objects::get_property( $blade, 'customDirectivesRT' ) );
+		$this->assertCount( 3, Objects::get_property( $blade, 'customDirectivesRT' ) );
 		$this->assertArrayHasKey( 'bar', Objects::get_property( $blade, 'customDirectivesRT' ) );
 	}
 
@@ -355,5 +355,21 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		$this->expectExceptionMessage( 'Invalid esc function provided' );
 
 		$this->get_provider()->set_esc_function( 'foo' );
+	}
+
+	/** @testdox By default the viewModel and component directives should be included. */
+	public function test_view_model_and_component_directives_included_by_default(): void {
+		$provider = $this->get_provider();
+
+		$blade = $provider->get_blade();
+		$this->assertArrayHasKey( 'component', Objects::get_property( $blade, 'customDirectivesRT' ) );
+		$this->assertArrayHasKey( 'viewModel', Objects::get_property( $blade, 'customDirectivesRT' ) );
+		// }
+
+		// 	$provider = $this->get_provider();
+		// 	$blade    = $provider->get_blade();
+
+		// 	$this->assertArrayHasKey( 'component', $blade->directiveClasses );
+		// 	$this->assertArrayHasKey( 'viewModel', $blade->directiveClasses );
 	}
 }

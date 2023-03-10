@@ -36,6 +36,24 @@ class PinkCrab_BladeOne extends BladeOne {
 	use BladeOneHtml;
 
 	/**
+	 * Bob the constructor.
+	 * The folder at $compiled_path is created in case it doesn't exist.
+	 *
+	 * @param string|string[] $template_path If null then it uses (caller_folder)/views
+	 * @param string          $compiled_path If null then it uses (caller_folder)/compiles
+	 * @param int             $mode         =[BladeOne::MODE_AUTO,BladeOne::MODE_DEBUG,BladeOne::MODE_FAST,BladeOne::MODE_SLOW][$i]
+	 */
+	public function __construct( $template_path = null, $compiled_path = null, $mode = 0 ) {
+		parent::__construct( $template_path, $compiled_path, $mode );
+
+		// Add the viewModel directive.
+		$this->directiveRT( 'viewModel', fn( $expression ) => $this->view_model( $expression, true ) );
+
+		// Add the component directive.
+		$this->directiveRT( 'component', fn( $expression ) => $this->component( $expression, true ) );
+	}
+
+	/**
 	 * The esc function to use
 	 *
 	 * @var callable(mixed):string
