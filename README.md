@@ -12,19 +12,17 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 [![WP6.0 [PHP7.2-8.1] Tests](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_0.yaml)
 [![WP6.1 [PHP7.2-8.1] Tests](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_1.yaml)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/516590e7548eadeeaa8a/maintainability)](https://codeclimate.com/github/Pink-Crab/Perique-BladeOne-Provider/maintainability)
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-BladeOne-Provider/branch/master/graph/badge.svg?token=F7W4S9O5IR)](https://codecov.io/gh/Pink-Crab/Perique-BladeOne-Provider)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/Perique-BladeOne-Provider/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/Perique-BladeOne-Provider/?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/516590e7548eadeeaa8a/maintainability)](https://codeclimate.com/github/Pink-Crab/Perique-BladeOne-Provider/maintainability)
 
 
-## Version ##
-**Release 1.3.1**
+> Supports and tested with the PinkCrab Perique Framework versions 1.3.*
 
-> Supports and tested with the PinkCrab Perique Framework versions 1.2.*
 
 * For support of the initial PinkCrab Plugin Frameworks (version 0.2.\* -> 0.4.\*) please use BladeOne_Provider 1.0.3
 * For support of all versions from 0.5.\* - 1.1.\* please use BladeOne_Provider 1.2.\*
-
+* For support of Perique 1.3.\* please use BladeOne_Provider 1.3.\*
 
 ## Why? ##
 The BladeOne implementation of the Renderable interface, allows the use of Blade within the PinkCrab Framework. 
