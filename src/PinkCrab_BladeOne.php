@@ -47,10 +47,20 @@ class PinkCrab_BladeOne extends BladeOne {
 		parent::__construct( $template_path, $compiled_path, $mode );
 
 		// Add the viewModel directive.
-		$this->directiveRT( 'viewModel', fn( $expression ) => $this->view_model( $expression, true ) );
+		$this->directiveRT(
+			'viewModel',
+			function( $expression ) {
+				return $this->view_model( $expression, true );
+			}
+		);
 
 		// Add the component directive.
-		$this->directiveRT( 'component', fn( $expression ) => $this->component( $expression, true ) );
+		$this->directiveRT(
+			'component',
+			function( $expression ) {
+				return $this->component( $expression, true );
+			}
+		);
 	}
 
 	/**

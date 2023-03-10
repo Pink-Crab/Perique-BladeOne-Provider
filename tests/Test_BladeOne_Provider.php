@@ -364,12 +364,5 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		$blade = $provider->get_blade();
 		$this->assertArrayHasKey( 'component', Objects::get_property( $blade, 'customDirectivesRT' ) );
 		$this->assertArrayHasKey( 'viewModel', Objects::get_property( $blade, 'customDirectivesRT' ) );
-		// }
-
-		// 	$provider = $this->get_provider();
-		// 	$blade    = $provider->get_blade();
-
-		// 	$this->assertArrayHasKey( 'component', $blade->directiveClasses );
-		// 	$this->assertArrayHasKey( 'viewModel', $blade->directiveClasses );
 	}
 }
