@@ -25,12 +25,7 @@ declare( strict_types=1 );
 namespace PinkCrab\BladeOne;
 
 use PinkCrab\Perique\Interfaces\Hookable;
-use eftec\bladeone\BladeOne;
-
 use PinkCrab\BladeOne\BladeOne_Provider;
-
-use PinkCrab\Perique\Interfaces\Renderable;
-
 use PinkCrab\Loader\Hook_Loader;
 
 
@@ -43,6 +38,12 @@ abstract class Abstract_BladeOne_Config implements Hookable {
 	 */
 	protected $renderable;
 
+	/**
+	 * Registers the hook to configure bladeone
+	 *
+	 * @param Hook_Loader $loader
+	 * @return void
+	 */
 	final public function register( Hook_Loader $loader ): void {
 		$loader->action( 'wp_loaded', array( $this, 'configure_blade_handler' ), 10, 2 );
 	}

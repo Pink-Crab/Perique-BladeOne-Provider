@@ -3,6 +3,16 @@
  * PHPUnit bootstrap file
  */
 
+/**
+ * Escape function for testing.
+ *
+ * @param mixed $e
+ * @return string
+ */
+function foo_esc( $e ):string {
+	return 'foo';
+}
+
 // Composer autoloader must be loaded before WP_PHPUNIT__DIR will be available
 require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
@@ -13,7 +23,7 @@ require_once getenv( 'WP_PHPUNIT__DIR' ) . '/includes/functions.php';
 try {
 	$dotenv = Dotenv\Dotenv::createUnsafeImmutable( __DIR__ );
 	$dotenv->load();
-} catch (\Throwable $th) {
+} catch ( \Throwable $th ) {
 	// Do nothing if fails to find env as not used in pipeline.
 }
 
