@@ -348,12 +348,12 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		// Null should not be escaped.
 		$this->assertEquals( '', $blade::e( null ) );
 	}
-	
+
 	/** @testdox Attempting to set a none callable string as the esc function an exception should be thrown */
 	public function test_exception_setting_non_callable_esc_function(): void {
-		$this->expectException( \TypeError::class );
+		$this->expectException( \Exception::class );
+		$this->expectExceptionMessage( 'Invalid esc function provided' );
+
 		$this->get_provider()->set_esc_function( 'foo' );
 	}
-
 }
-

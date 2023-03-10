@@ -3,7 +3,13 @@
  * PHPUnit bootstrap file
  */
 
-function foo_esc( $e ) {
+/**
+ * Escape function for testing.
+ *
+ * @param mixed $e
+ * @return string
+ */
+function foo_esc( $e ):string {
 	return 'foo';
 }
 

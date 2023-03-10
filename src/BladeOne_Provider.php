@@ -40,7 +40,7 @@ class BladeOne_Provider implements Renderable {
 	/**
 	 * BladeOne Instance
 	 *
-	 * @var BladeOne
+	 * @var PinkCrab_BladeOne
 	 */
 	protected static $blade;
 
@@ -87,11 +87,11 @@ class BladeOne_Provider implements Renderable {
 
 	/**
 	 * Sets the esc function.
-	 * 
-	 * @param callable $esc
+	 *
+	 * @param string $esc
 	 * @return self
 	 */
-	public function set_esc_function( callable $esc ): self {
+	public function set_esc_function( string $esc ): self {
 		static::$blade->set_esc_function( $esc );
 		return $this;
 	}
