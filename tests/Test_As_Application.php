@@ -182,4 +182,22 @@ class Test_As_Application extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'woo', $value );
 	}
 
+	/** @testdox When a string is escaped, it should use the default WP esc_html */
+	public function test_can_escape_string(): void {
+		$this->unset_app_instance();
+		$app = $this->pre_populated_app_provider();
+
+		$called_esc_html = false;
+		add_filter(
+			'esc_html',
+			function( $value ) use ( &$called_esc_html ) {
+				$called_esc_html = true;
+				return $value;
+			}
+		);
+
+		$value = $app::view()->render( 'testview', array( 'foo' => 'woo' ), false );
+		$this->assertTrue( $called_esc_html );
+	}
+
 }

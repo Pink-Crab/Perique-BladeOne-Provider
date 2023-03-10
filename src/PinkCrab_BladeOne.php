@@ -24,6 +24,7 @@ declare( strict_types=1 );
 
 namespace PinkCrab\BladeOne;
 
+use php_user_filter;
 use eftec\bladeone\BladeOne;
 use eftec\bladeonehtml\BladeOneHtml;
 use PinkCrab\Perique\Application\App;
@@ -33,6 +34,32 @@ use PinkCrab\Perique\Services\View\Component\Component;
 
 class PinkCrab_BladeOne extends BladeOne {
 	use BladeOneHtml;
+
+	/**
+	 * The default echo format
+	 *
+	 * @var string
+	 */
+	protected $echoFormat = '\esc_html(%s)'; //phpcs:ignore WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
+
+	/**
+	 * Escape HTML entities in a string.
+	 *
+	 * @param int|float|string|null|mixed[]|object $value
+	 * @return string
+	 */
+	public static function e( $value ): string {
+		if ( \is_null( $value ) ) {
+			return '';
+		}
+		if ( \is_array( $value ) || \is_object( $value ) ) {
+			return \esc_html( \print_r( $value, true ) ); //phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+		}
+		if ( \is_numeric( $value ) ) {
+			$value = (string) $value;
+		}
+		return \esc_html( $value );
+	}
 
 	/**
 	 * Renders  component
@@ -61,4 +88,6 @@ class PinkCrab_BladeOne extends BladeOne {
 
 		return $view->view_model( $view_model, $print );
 	}
+
+
 }
