@@ -375,4 +375,15 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		// Array of paths
 		$this->assertEquals( 'bar.foo', BladeOne_Provider::init( array( 'bar.foo', 'foo.bar' ) )->base_view_path() );
 	}
+
+	/** @testdox It should be possible to access all paths used for templates. */
+	public function test_get_view_paths(): void {
+		$blade = BladeOne_Provider::init( array( 'bar.foo', 'foo.bar' ) );
+		$paths = $blade->get_blade()->get_template_paths();
+
+		$this->assertIsArray( $paths );
+		$this->assertCount( 2, $paths );
+		$this->assertContains( 'bar.foo', $paths );
+		$this->assertContains( 'foo.bar', $paths );
+	}
 }
