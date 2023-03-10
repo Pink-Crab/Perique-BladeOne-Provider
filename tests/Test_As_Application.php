@@ -218,4 +218,25 @@ class Test_As_Application extends WP_UnitTestCase {
 		$this->assertTrue( $called_esc_html );
 	}
 
+	/** @testdox It should be possible to render an nested view model using @viewModel($instance) */
+	public function test_can_render_nested_view_model_directive(): void {
+		$app = $this->pre_populated_app_provider();
+
+		$value = $app::view()->render( 'testrendersviewmodeldirective', array(), false );
+
+		$this->assertStringContainsString( 'woo', $value );
+	}
+
+		/** @testdox It should be possible to render a component nested inside another component using @component($instance) */
+	public function test_can_render_nested_component_using_directive(): void {
+		$app = $this->pre_populated_app_provider();
+
+		$value = $app::view()->render( 'testnestedcomponentsdirective', array(), false );
+
+		$this->assertStringContainsString(
+			'<input name="a" id="b" value="c" type="d" />',
+			$value
+		);
+	}
+
 }

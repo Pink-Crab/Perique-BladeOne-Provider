@@ -354,6 +354,34 @@ App::view()->engine()->some_method($data);
 
 ***
 
+## View Models ##
+Inside your templates it is possible to render viewModels in your templates by using either of the following methods.
+
+```php
+// @file /views/template.blade.php
+
+// Using the $this->view_models() method.
+{!! $this->view_modes(new View_Model('path.template', ['key' => 'value'])) !!}
+
+// Using the directive
+@viewModel(new View_Model('path.template', ['key' => 'value']))
+```
+
+## Components ##
+Inside your templates it is possible to render components in your templates by using either of the following methods.
+
+```php
+// @file /views/template.blade.php
+
+// Using the $this->component() method.
+{!! $this->component(new SomeComponent()) !!}
+
+// Using the directive
+@component(new SomeComponent())
+```
+> Please note `@component` is not the same as regular BLADE components. BladeOne does not support these and this is the Perique Frameworks own implementation.
+
+
 ## Dependencies ##
 * [BladeOne 4.1](https://github.com/EFTEC/BladeOne)
 * [BladeOne HTML 2.0](https://github.com/eftec/BladeOneHtml)
