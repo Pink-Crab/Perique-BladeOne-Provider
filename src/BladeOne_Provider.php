@@ -86,6 +86,17 @@ class BladeOne_Provider implements Renderable {
 	}
 
 	/**
+	 * Returns the base view path.
+	 *
+	 * @return string
+	 * @since 1.4.0
+	 */
+	public function base_view_path(): string {
+		$paths = static::$blade->get_template_paths();
+		return ! empty( $paths ) ? reset( $paths ) : '';
+	}
+
+	/**
 	 * Sets the esc function.
 	 *
 	 * @param string $esc
