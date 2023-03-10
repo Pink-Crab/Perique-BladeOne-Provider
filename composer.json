@@ -38,7 +38,7 @@
         "vlucas/phpdotenv": "^5.4"
     },
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.2.0",
         "pinkcrab/perique-framework-core": "1.*",
         "eftec/bladeone": "4.*",
         "eftec/bladeonehtml": "2.*"
