@@ -235,7 +235,7 @@ $provider->add_alias_classes('MyClass', 'Namespace\\For\\Class');
  *
  * @param string|array<string, mixed> $var_name It is the name of the variable or it is an associative array
  * @param mixed        $value
- * @return $this
+ * @return self
  */
 public function share( $var_name, $value = null ): self{}
 ```
@@ -283,7 +283,7 @@ $provider->set_mode(BladeOne::MODE_AUTO);
  * It must includes the leading dot e.g. .blade.php
  *
  * @param string $file_extension Example: .prefix.ext
- * @return $this
+ * @return self
  */
 public function set_file_extension( string $file_extension ): self{}
 ```
@@ -304,7 +304,7 @@ $foo->render('my', ['data'=>'foo']);
  * Including the leading dot for the extension is required, e.g. .bladec
  *
  * @param string $file_extension
- * @return $this
+ * @return self
  */
 public function set_compiled_extension(( string $file_extension ): self{}
 ```
@@ -312,7 +312,22 @@ Allows you to define a custom extension for your compiled views.
 ```php
 $provider->set_file_extension('.view_cache');
 ```
+---
 
+### **set_esc** ###
+```php
+/**
+ * Sets the esc function.
+ * 
+ * @param callable(mixed):string $esc
+ * @return self
+ */
+public function set_esc_function( callable $esc ): self {}
+```
+Allows you to define a custom esc function for your views. By default this is set to `esc_html`.
+```php
+$provider->set_esc_function('esc_attr');
+```
 ---
 
 ## Magic Call Methods ##

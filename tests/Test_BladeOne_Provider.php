@@ -333,7 +333,27 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		);
 	}
 
+	/** @testdox When calling BladeOne::e() the custom esc function should be called. */
+	public function test_esc_function_called_when_calling_bladeone_e(): void {
+		$provider = $this->get_provider();
+		$provider->set_esc_function( 'foo_esc' );
+		$blade = $provider->get_blade();
+
+		$this->assertEquals( 'foo', $blade::e( 'fff' ) );
+		$this->assertEquals( 'foo', $blade::e( 11 ) );
+		$this->assertEquals( 'foo', $blade::e( 1.45 ) );
+		$this->assertEquals( 'foo', $blade::e( array( 'fff', 'bar' ) ) );
+		$this->assertEquals( 'foo', $blade::e( (object) array( 'fff', 'bar' ) ) );
+
+		// Null should not be escaped.
+		$this->assertEquals( '', $blade::e( null ) );
+	}
 	
+	/** @testdox Attempting to set a none callable string as the esc function an exception should be thrown */
+	public function test_exception_setting_non_callable_esc_function(): void {
+		$this->expectException( \TypeError::class );
+		$this->get_provider()->set_esc_function( 'foo' );
+	}
 
 }
 

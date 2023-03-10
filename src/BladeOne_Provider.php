@@ -86,6 +86,17 @@ class BladeOne_Provider implements Renderable {
 	}
 
 	/**
+	 * Sets the esc function.
+	 * 
+	 * @param callable $esc
+	 * @return self
+	 */
+	public function set_esc_function( callable $esc ): self {
+		static::$blade->set_esc_function( $esc );
+		return $this;
+	}
+
+	/**
 	 * Sets the component compiler.
 	 *
 	 * @param Component_Compiler $compiler
