@@ -29,5 +29,6 @@ class Mock_Blade_Config extends Abstract_BladeOne_Config {
 		$bladeOne->set_compiled_extension( $this->service->get_cache_file_extension() );
 		$bladeOne->directive( 'test', '__return_true' );
 		$bladeOne->allow_pipe( false );
+		$bladeOne->set_esc_function( 'foo_esc' );
 	}
 }

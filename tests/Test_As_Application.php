@@ -127,6 +127,9 @@ class Test_As_Application extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'test', Objects::get_property( $blade_one_post_config, 'customDirectives' ) );
 		$this->assertEquals( '__return_true', Objects::get_property( $blade_one_post_config, 'customDirectives' )['test'] );
 		$this->assertEquals( '.mock-cache', Objects::get_property( $blade_one_post_config, 'compileExtension' ) );
+
+		// Ensure the esc function can be set in config.
+		$this->assertEquals( 'foo_esc', Objects::get_property( $blade_one_post_config, 'esc_function' ) );
 	}
 
 	/** @testdox It should be possible to use a custom wrapper for PinkCrab BladeOne as a class name., this allows for setting of custom traits for Components etc. */
@@ -161,7 +164,6 @@ class Test_As_Application extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to render a component nested inside another component */
 	public function test_can_render_nested_component(): void {
-		$this->unset_app_instance();
 		$app = $this->pre_populated_app_provider();
 
 		$value = $app::view()->render( 'testnestedcomponents', array(), false );
@@ -174,12 +176,67 @@ class Test_As_Application extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to render an nested view model using $this->view_model($instance) */
 	public function test_can_render_nested_view_model(): void {
-		$this->unset_app_instance();
 		$app = $this->pre_populated_app_provider();
 
 		$value = $app::view()->render( 'testrendersviewmodel', array(), false );
 
 		$this->assertStringContainsString( 'woo', $value );
+	}
+
+	/** @testdox When a string is escaped, it should use the default WP esc_html */
+	public function test_can_escape_string(): void {
+		$app = $this->pre_populated_app_provider();
+
+		$called_esc_html = false;
+		add_filter(
+			'esc_html',
+			function( $value ) use ( &$called_esc_html ) {
+				$called_esc_html = true;
+				return $value;
+			}
+		);
+
+		$app::view()->render( 'testview', array( 'foo' => 'woo' ), false );
+		$this->assertTrue( $called_esc_html );
+	}
+
+	/** @testdox It should be possible to set any function as the esc function */
+	public function test_set_custom_esc_function(): void {
+		$app = $this->pre_populated_app_provider();
+
+		$called_esc_html = false;
+		add_filter(
+			'attribute_escape',
+			function( $value ) use ( &$called_esc_html ) {
+				$called_esc_html = true;
+				return $value;
+			}
+		);
+
+		$app::view()->engine()->get_blade()->set_esc_function( 'esc_attr' );
+		$app::view()->render( 'testview', array( 'foo' => 'woo' ), false );
+		$this->assertTrue( $called_esc_html );
+	}
+
+	/** @testdox It should be possible to render an nested view model using @viewModel($instance) */
+	public function test_can_render_nested_view_model_directive(): void {
+		$app = $this->pre_populated_app_provider();
+
+		$value = $app::view()->render( 'testrendersviewmodeldirective', array(), false );
+
+		$this->assertStringContainsString( 'woo', $value );
+	}
+
+		/** @testdox It should be possible to render a component nested inside another component using @component($instance) */
+	public function test_can_render_nested_component_using_directive(): void {
+		$app = $this->pre_populated_app_provider();
+
+		$value = $app::view()->render( 'testnestedcomponentsdirective', array(), false );
+
+		$this->assertStringContainsString(
+			'<input name="a" id="b" value="c" type="d" />',
+			$value
+		);
 	}
 
 }

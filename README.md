@@ -1,20 +1,28 @@
 # BladeOne_Provider
 A BladeOne Provider for the PinkCrab Renderable Interface.
 
-![alt text](https://img.shields.io/badge/Current_Version-1.3.1-green.svg?style=flat " ") 
-[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-[![WordPress 6.0 Test Suite](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_0.yaml)
+[![Latest Stable Version](http://poser.pugx.org/pinkcrab/bladeone-provider/v)](https://packagist.org/packages/pinkcrab/bladeone-provider)
+[![Total Downloads](http://poser.pugx.org/pinkcrab/bladeone-provider/downloads)](https://packagist.org/packages/pinkcrab/bladeone-provider)
+[![License](http://poser.pugx.org/pinkcrab/bladeone-provider/license)](https://packagist.org/packages/pinkcrab/bladeone-provider)
+[![PHP Version Require](http://poser.pugx.org/pinkcrab/bladeone-provider/require/php)](https://packagist.org/packages/pinkcrab/bladeone-provider)
+![GitHub contributors](https://img.shields.io/github/contributors/Pink-Crab/Perique-BladeOne-Provider?label=Contributors)
+![GitHub issues](https://img.shields.io/github/issues-raw/Pink-Crab/Perique-BladeOne-Provider)
+
+[![WP5.9 [PHP7.2-8.1] Tests](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_5_9.yaml/badge.svg)](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_5_9.yaml)
+[![WP6.0 [PHP7.2-8.1] Tests](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_0.yaml/badge.svg)](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_0.yaml)
+[![WP6.1 [PHP7.2-8.1] Tests](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_1.yaml/badge.svg)](https://github.com/Pink-Crab/Perique-BladeOne-Provider/actions/workflows/WP_6_1.yaml)
+
 [![codecov](https://codecov.io/gh/Pink-Crab/Perique-BladeOne-Provider/branch/master/graph/badge.svg?token=F7W4S9O5IR)](https://codecov.io/gh/Pink-Crab/Perique-BladeOne-Provider)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Pink-Crab/Perique-BladeOne-Provider/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Pink-Crab/Perique-BladeOne-Provider/?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/516590e7548eadeeaa8a/maintainability)](https://codeclimate.com/github/Pink-Crab/Perique-BladeOne-Provider/maintainability)
 
 
-## Version ##
-**Release 1.3.1**
+> Supports and tested with the PinkCrab Perique Framework versions 1.3.*
 
-> Supports and tested with the PinkCrab Perique Framework versions 1.2.*
 
 * For support of the initial PinkCrab Plugin Frameworks (version 0.2.\* -> 0.4.\*) please use BladeOne_Provider 1.0.3
 * For support of all versions from 0.5.\* - 1.1.\* please use BladeOne_Provider 1.2.\*
-
+* For support of Perique 1.3.\* please use BladeOne_Provider 1.3.\*
 
 ## Why? ##
 The BladeOne implementation of the Renderable interface, allows the use of Blade within the PinkCrab Framework. 
@@ -227,7 +235,7 @@ $provider->add_alias_classes('MyClass', 'Namespace\\For\\Class');
  *
  * @param string|array<string, mixed> $var_name It is the name of the variable or it is an associative array
  * @param mixed        $value
- * @return $this
+ * @return self
  */
 public function share( $var_name, $value = null ): self{}
 ```
@@ -275,7 +283,7 @@ $provider->set_mode(BladeOne::MODE_AUTO);
  * It must includes the leading dot e.g. .blade.php
  *
  * @param string $file_extension Example: .prefix.ext
- * @return $this
+ * @return self
  */
 public function set_file_extension( string $file_extension ): self{}
 ```
@@ -296,7 +304,7 @@ $foo->render('my', ['data'=>'foo']);
  * Including the leading dot for the extension is required, e.g. .bladec
  *
  * @param string $file_extension
- * @return $this
+ * @return self
  */
 public function set_compiled_extension(( string $file_extension ): self{}
 ```
@@ -304,7 +312,22 @@ Allows you to define a custom extension for your compiled views.
 ```php
 $provider->set_file_extension('.view_cache');
 ```
+---
 
+### **set_esc** ###
+```php
+/**
+ * Sets the esc function.
+ * 
+ * @param callable(mixed):string $esc
+ * @return self
+ */
+public function set_esc_function( callable $esc ): self {}
+```
+Allows you to define a custom esc function for your views. By default this is set to `esc_html`.
+```php
+$provider->set_esc_function('esc_attr');
+```
 ---
 
 ## Magic Call Methods ##
@@ -331,6 +354,34 @@ App::view()->engine()->some_method($data);
 
 ***
 
+## View Models ##
+Inside your templates it is possible to render viewModels in your templates by using either of the following methods.
+
+```php
+// @file /views/template.blade.php
+
+// Using the $this->view_models() method.
+{!! $this->view_modes(new View_Model('path.template', ['key' => 'value'])) !!}
+
+// Using the directive
+@viewModel(new View_Model('path.template', ['key' => 'value']))
+```
+
+## Components ##
+Inside your templates it is possible to render components in your templates by using either of the following methods.
+
+```php
+// @file /views/template.blade.php
+
+// Using the $this->component() method.
+{!! $this->component(new SomeComponent()) !!}
+
+// Using the directive
+@component(new SomeComponent())
+```
+> Please note `@component` is not the same as regular BLADE components. BladeOne does not support these and this is the Perique Frameworks own implementation.
+
+
 ## Dependencies ##
 * [BladeOne 4.1](https://github.com/EFTEC/BladeOne)
 * [BladeOne HTML 2.0](https://github.com/eftec/BladeOneHtml)
@@ -345,6 +396,7 @@ App::view()->engine()->some_method($data);
 http://www.opensource.org/licenses/mit-license.html  
 
 ## Change Log ##
+* 1.3.2 - Updated to match Perique 1.3.0 with both Component and View_Model support. Dropped PHP 7.1 support.
 * 1.3.1 - Adds in direct support from $this->component() and $this->view_models() in views, inline with native `PHP_Engine` renderer.
 * 1.3.0 - Updated to match Perique 1.2.0 with both Component and View_Model support. Dropped PHP 7.1 support.
 * 1.2.2 - Ensure that BladeOne is only loaded once wp is loaded. This avoids issues where template globals are registered before WP has finished loading. See issue #13

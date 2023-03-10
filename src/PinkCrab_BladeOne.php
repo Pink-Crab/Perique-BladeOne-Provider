@@ -24,6 +24,7 @@ declare( strict_types=1 );
 
 namespace PinkCrab\BladeOne;
 
+use php_user_filter;
 use eftec\bladeone\BladeOne;
 use eftec\bladeonehtml\BladeOneHtml;
 use PinkCrab\Perique\Application\App;
@@ -33,6 +34,84 @@ use PinkCrab\Perique\Services\View\Component\Component;
 
 class PinkCrab_BladeOne extends BladeOne {
 	use BladeOneHtml;
+
+	/**
+	 * Bob the constructor.
+	 * The folder at $compiled_path is created in case it doesn't exist.
+	 *
+	 * @param string|string[] $template_path If null then it uses (caller_folder)/views
+	 * @param string          $compiled_path If null then it uses (caller_folder)/compiles
+	 * @param int             $mode         =[BladeOne::MODE_AUTO,BladeOne::MODE_DEBUG,BladeOne::MODE_FAST,BladeOne::MODE_SLOW][$i]
+	 */
+	public function __construct( $template_path = null, $compiled_path = null, $mode = 0 ) {
+		parent::__construct( $template_path, $compiled_path, $mode );
+
+		// Add the viewModel directive.
+		$this->directiveRT(
+			'viewModel',
+			function( $expression ) {
+				return $this->view_model( $expression, true );
+			}
+		);
+
+		// Add the component directive.
+		$this->directiveRT(
+			'component',
+			function( $expression ) {
+				return $this->component( $expression, true );
+			}
+		);
+	}
+
+	/**
+	 * The esc function to use
+	 *
+	 * @var callable(mixed):string
+	 */
+	protected static $esc_function = 'esc_html';
+
+	/**
+	 * The default echo format
+	 *
+	 * @var string
+	 */
+	protected $echoFormat = '\esc_html(%s)'; //phpcs:ignore WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
+
+
+	/**
+	 * Sets the esc function to use
+	 *
+	 * @param string $esc_function
+	 * @return void
+	 */
+	public function set_esc_function( string $esc_function ): void {
+		// Throw exception if not a valid callable.
+		if ( ! \is_callable( $esc_function ) ) {
+			throw new \InvalidArgumentException( 'Invalid esc function provided.' );
+		}
+
+		static::$esc_function = $esc_function;
+		$this->echoFormat     = sprintf( '\\%s(%%s)', $esc_function ); //phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	}
+
+	/**
+	 * Escape HTML entities in a string.
+	 *
+	 * @param int|float|string|null|mixed[]|object $value
+	 * @return string
+	 */
+	public static function e( $value ): string {
+		if ( \is_null( $value ) ) {
+			return '';
+		}
+		if ( \is_array( $value ) || \is_object( $value ) ) {
+			return \call_user_func( static::$esc_function, \print_r( $value, true ) );//phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+		}
+		if ( \is_numeric( $value ) ) {
+			$value = (string) $value;
+		}
+		return \call_user_func( static::$esc_function, $value );
+	}
 
 	/**
 	 * Renders  component
@@ -61,4 +140,6 @@ class PinkCrab_BladeOne extends BladeOne {
 
 		return $view->view_model( $view_model, $print );
 	}
+
+
 }
