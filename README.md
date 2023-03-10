@@ -17,12 +17,8 @@ A BladeOne Provider for the PinkCrab Renderable Interface.
 [![Maintainability](https://api.codeclimate.com/v1/badges/516590e7548eadeeaa8a/maintainability)](https://codeclimate.com/github/Pink-Crab/Perique-BladeOne-Provider/maintainability)
 
 
-> Supports and tested with the PinkCrab Perique Framework versions 1.3.*
+> Supports and tested with the PinkCrab Perique Framework versions 1.4.*
 
-
-* For support of the initial PinkCrab Plugin Frameworks (version 0.2.\* -> 0.4.\*) please use BladeOne_Provider 1.0.3
-* For support of all versions from 0.5.\* - 1.1.\* please use BladeOne_Provider 1.2.\*
-* For support of Perique 1.3.\* please use BladeOne_Provider 1.3.\*
 
 ## Why? ##
 The BladeOne implementation of the Renderable interface, allows the use of Blade within the PinkCrab Framework. 
@@ -395,7 +391,14 @@ Inside your templates it is possible to render components in your templates by u
 ### MIT License ###
 http://www.opensource.org/licenses/mit-license.html  
 
+## Previous Perique Support ##
+
+* For support of Perique 1.3.\* please use BladeOne_Provider 1.3.\*
+* For support of all versions from 0.5.\* - 1.1.\* please use BladeOne_Provider 1.2.\*
+* For support of the initial PinkCrab Plugin Frameworks (version 0.2.\* -> 0.4.\*) please use BladeOne_Provider 1.0.3
+
 ## Change Log ##
+* 1.4.0 - Now matches the changes in Perique 1.4.0, no longer compatible with Perique 1.3.0 and below.
 * 1.3.2 - Updated to match Perique 1.3.0 with both Component and View_Model support. Dropped PHP 7.1 support.
 * 1.3.1 - Adds in direct support from $this->component() and $this->view_models() in views, inline with native `PHP_Engine` renderer.
 * 1.3.0 - Updated to match Perique 1.2.0 with both Component and View_Model support. Dropped PHP 7.1 support.
