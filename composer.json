@@ -47,12 +47,14 @@
         "coverage": "vendor/bin/phpunit --colors=always --testdox --coverage-html coverage-report",
         "analyse": "vendor/bin/phpstan analyse src -l8",
         "sniff": "./vendor/bin/phpcs src/ -v",
-        "all": "composer coverage && composer analyse && composer sniff"
+        "all": "composer coverage && composer analyse && composer sniff",
+        "mutation": "./vendor/bin/infection"
     },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "roots/wordpress-core-installer": true
+            "roots/wordpress-core-installer": true,
+            "infection/extension-installer": true
         }
     }
 }
