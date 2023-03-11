@@ -243,7 +243,6 @@ class Test_As_Application extends WP_UnitTestCase {
 	 * @testdox By not passing the view or compliled path to the use method on boot strap these should be implied.
 	 */
 	public function test_can_use_default_paths(): void {
-		// $this->unset_app_instance();
 		// Setup BladeOne.
 		BladeOne_Bootstrap::use();
 
