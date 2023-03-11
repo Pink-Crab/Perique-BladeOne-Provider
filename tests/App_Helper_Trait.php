@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PinkCrab\BladeOne\Tests;
 
 use PinkCrab\Perique\Application\App_Factory;
+use PinkCrab\Perique\Application\Hooks;
+
 use PinkCrab\Perique\Services\View\Component\Component_Compiler;
 use PinkCrab\Perique\Application\App;
 use eftec\bladeone\BladeOne;
@@ -34,6 +36,8 @@ trait App_Helper_Trait {
 	 * @return void
 	 */
 	protected static function unset_app_instance(): void {
+		\remove_all_filters( Hooks::APP_INIT_SET_DI_RULES );
+		
 		$app = new App();
 		Objects::set_property( $app, 'app_config', null );
 		Objects::set_property( $app, 'container', null );
@@ -57,18 +61,19 @@ trait App_Helper_Trait {
 	 */
 	protected function pre_populated_app_provider(): App {
 		$cache = \dirname( __FILE__ ) . '/files/cache';
-		$views = \dirname( __FILE__ ) . '/files/views';
+		$views = \dirname( __FILE__ ) . '/files/';
 
 		// Setup BladeOne.
-		BladeOne_Bootstrap::use( $views, $cache, BladeOne::MODE_DEBUG );
+		BladeOne_Bootstrap::use( $views . 'views', $cache, BladeOne::MODE_DEBUG );
 
 		// Build and populate the app.
-		$app = ( new App_Factory( __DIR__ ) )->with_wp_dice( true )
-		->di_rules(
-			array( Component_Compiler::class => array( 'constructParams' => array( 'components' ) ) )
-		)
-		->app_config( array() )
-		->boot();
+		$app = ( new App_Factory( $views ))
+			->default_setup()
+			->di_rules(
+				array( Component_Compiler::class => array( 'constructParams' => array( 'components' ) ) )
+			)
+			->app_config( array() )
+			->boot();
 
 		do_action( 'init' ); // Boots Perique
 		do_action( 'wp_loaded' ); // Triggers the blade one config once all is loaded (see issue 13)

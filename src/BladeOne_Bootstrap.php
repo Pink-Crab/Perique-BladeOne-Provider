@@ -29,6 +29,7 @@ use eftec\bladeone\BladeOne;
 use PinkCrab\Perique\Application\Hooks;
 use PinkCrab\BladeOne\BladeOne_Provider;
 use PinkCrab\BladeOne\PinkCrab_BladeOne;
+use PinkCrab\Perique\Application\Config;
 use PinkCrab\Perique\Interfaces\Renderable;
 use PinkCrab\Perique\Services\View\PHP_Engine;
 use PinkCrab\BladeOne\Abstract_BladeOne_Config;
@@ -49,12 +50,24 @@ class BladeOne_Bootstrap {
 		add_filter(
 			Hooks::APP_INIT_SET_DI_RULES,
 			function( $rules ) use ( $template_path, $compiled_path, $mode, $blade ) {
+
 				// Unset the global PHP_Engine useage.
 				if ( array_key_exists( '*', $rules )
 				&& array_key_exists( 'substitutions', $rules['*'] )
 				&& array_key_exists( Renderable::class, $rules['*']['substitutions'] )
 				&& is_a( $rules['*']['substitutions'][ Renderable::class ], PHP_Engine::class ) ) {
+
+					// If template path is not set, get from renderable.
+					if ( is_null( $template_path ) ) {
+						$template_path = $rules['*']['substitutions'][ Renderable::class ]->base_view_path();
+					}
 					unset( $rules['*']['substitutions'][ Renderable::class ] );
+				}
+
+				// If there is no compiled path, set to to uploads.
+				if ( is_null( $compiled_path ) ) {
+					$wp_upload_dir = wp_upload_dir();
+					$compiled_path = sprintf( '%1$s%2$scompiled%2$sblade', $wp_upload_dir['basedir'], \DIRECTORY_SEPARATOR );
 				}
 
 				// Get the version of Blade to start.
