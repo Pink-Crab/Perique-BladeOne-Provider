@@ -227,7 +227,7 @@ class Test_As_Application extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'woo', $value );
 	}
 
-		/** @testdox It should be possible to render a component nested inside another component using @component($instance) */
+	/** @testdox It should be possible to render a component nested inside another component using @component($instance) */
 	public function test_can_render_nested_component_using_directive(): void {
 		$app = $this->pre_populated_app_provider();
 
@@ -237,6 +237,32 @@ class Test_As_Application extends WP_UnitTestCase {
 			'<input name="a" id="b" value="c" type="d" />',
 			$value
 		);
+	}
+
+	/** 
+	 * @testdox By not passing the view or compliled path to the use method on boot strap these should be implied.
+	 */
+	public function test_can_use_default_paths(): void {
+		// Setup BladeOne.
+		BladeOne_Bootstrap::use();
+
+		// Build and populate the app.
+		$app = ( new App_Factory( \dirname( __FILE__ ) . '/files/' ) )
+			->default_setup()
+			->app_config( array() )
+			->boot();
+
+		do_action( 'init' ); // Boots Perique
+		do_action( 'wp_loaded' ); // Triggers the blade one config once all is loaded (see issue 13)
+
+		// Get blade instance
+		$blade = $app::view()->engine()->get_blade();
+		// Assert the template path is correct.
+		$this->assertEquals( \dirname( __FILE__ ) . '/files/views/', $blade->get_template_paths()[0] );
+		
+		// Assert the compiled path is correct.
+		$path = \wp_upload_dir()['basedir'] . '/compiled/blade';
+		$this->assertEquals( $path, Objects::get_property( $blade, 'compiledPath' ) );
 	}
 
 }

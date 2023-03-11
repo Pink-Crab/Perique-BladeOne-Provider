@@ -52,7 +52,8 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "roots/wordpress-core-installer": true
+            "roots/wordpress-core-installer": true,
+            "infection/extension-installer": false
         }
     }
 }
