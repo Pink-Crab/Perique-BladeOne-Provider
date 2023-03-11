@@ -46,9 +46,12 @@ BladeOne_Bootstrap::use( $views_path, $cache_path, $blade_mode, $blade_class );
 $app = ( new App_Factory() )->with_wp_dice( true )
 	->.....
 ```
-> **\$views_path** :: This can be a string or an array of strings. If an array is passed, the first path that exists will be used. If not passed, the path defined in Perique will be used.
-> **\$cache_path** :: This should be a string path to the cache directory. If not passed, the path will be set as the `WP_CONTENT_DIR` . 'uploads/compiled/blade'
+> **\$views_path** :: This can be a string or an array of strings. If an array is passed, the first path that exists will be used. If not passed, the path defined in Perique will be used.  
+
+> **\$cache_path** :: This should be a string path to the cache directory. If not passed, the path will be set as the `WP_CONTENT_DIR` . 'uploads/compiled/blade'  
+
 > **\$blade_mode** :: For more details on the options please [see official docs](https://github.com/EFTEC/BladeOne/blob/d3e1efa1c6f776aa87fe47164d77e7ea67fc196f/lib/BladeOne.php#L208 )   
+
 > **\$blade_class** :: This should be a the class name or instance of a class that extends `PinkCrab_BladeOne::class` this allows for the creation of custom components and extending BladeOne in general. For more details please [see official docs](https://github.com/EFTEC/BladeOne/wiki/Extending-the-class) Passing nothing or an invalid type will just use the default PinkCrab_BladeOne.
 
 > If the cache directory doesn't exist, BladeOne will create it for you. It is however best to do this yourself to be sure of permissions etc.
