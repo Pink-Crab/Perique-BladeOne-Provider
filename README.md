@@ -388,7 +388,7 @@ Inside your templates it is possible to render components in your templates by u
 * [BladeOne HTML 2.0](https://github.com/eftec/BladeOneHtml)
 
 ## Requires ##
-* [PinkCrab Perique Framework V1.2.0 and above.](https://github.com/Pink-Crab/Perqiue-Framework)
+* [PinkCrab Perique Framework V1.4.0 and above.](https://github.com/Pink-Crab/Perqiue-Framework)
 * PHP7.2+
 
 ## License ##
