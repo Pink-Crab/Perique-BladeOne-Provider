@@ -37,8 +37,8 @@
         "vlucas/phpdotenv": "<=5.5.0"
     },
     "require": {
-        "php": ">=7.2.0",
-        "pinkcrab/perique-framework-core": "1.4.0",
+        "php": ">=7.4.0",
+        "pinkcrab/perique-framework-core": "dev-feature/v2-sandbox",
         "eftec/bladeone": "4.*",
         "eftec/bladeonehtml": "2.*"
     },
@@ -52,7 +52,8 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "roots/wordpress-core-installer": true
+            "roots/wordpress-core-installer": true,
+            "infection/extension-installer": true
         }
     }
 }
