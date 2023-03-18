@@ -1,6 +1,10 @@
 # BladeOne_Provider
 A BladeOne Provider for the PinkCrab Renderable Interface.
 
+> ## PLEASE NOTE THIS MODULE HAS BEEN DEPRECATED AND IS NO LONGER MAINTAINED. PLEASE USE THE [PinkCrab/BladeOne_Engine](https://github.com/Pink-Crab/BladeOne_Engine) FOR [PERIQUE V2](https://github.com/Pink-Crab/Perique-Framework)
+
+> ### V1.4.* Will be maintained for a short while with any bug fixes to retain support for previous versions of Perique. Will not receive any further feature updates and it is highly suggested to switch to V2
+
 [![Latest Stable Version](http://poser.pugx.org/pinkcrab/bladeone-provider/v)](https://packagist.org/packages/pinkcrab/bladeone-provider)
 [![Total Downloads](http://poser.pugx.org/pinkcrab/bladeone-provider/downloads)](https://packagist.org/packages/pinkcrab/bladeone-provider)
 [![License](http://poser.pugx.org/pinkcrab/bladeone-provider/license)](https://packagist.org/packages/pinkcrab/bladeone-provider)
