@@ -1,4 +1,4 @@
-# BladeOne_Provider
+# BladeOne_Engine
 A BladeOne Provider for the PinkCrab Renderable Interface.
 
 [![Latest Stable Version](http://poser.pugx.org/pinkcrab/bladeone-provider/v)](https://packagist.org/packages/pinkcrab/bladeone-provider)
@@ -76,9 +76,9 @@ class My_Blade_Config extends Abstract_BladeOne_Config {
 
 	/**	
 	 * This is the only method that must be implemented
-	 * @param BladeOne_Provider $provider The instance of BladeOne being used.
+	 * @param BladeOne_Engine $provider The instance of BladeOne being used.
 	 */
-	public function config( BladeOne_Provider $provider ): void {
+	public function config( BladeOne_Engine $provider ): void {
 		// Use this method to configure Blade 
 		// Details of methods can be found below.		
 		$provider->set_compiled_extension( $this->service->get_cache_file_extension() );
@@ -90,7 +90,7 @@ class My_Blade_Config extends Abstract_BladeOne_Config {
 > You can have as many of these config classes as you want, allowing you to break up any custom directives, globals values and aliases etc.
 
 ## Public Methods ##
-The BladeOne_Provider class has a number of methods which can be used to configure the underlying BladeOne implementation. This can be done using the `config()` method as part of the Config class above.
+The BladeOne_Engine class has a number of methods which can be used to configure the underlying BladeOne implementation. This can be done using the `config()` method as part of the Config class above.
 
 ---
 
@@ -333,13 +333,13 @@ $provider->set_esc_function('esc_attr');
 
 ## Magic Call Methods ##
 
-The BladeOne class has a large selection of Static and regular methods, these can all be accessed from BladeOne_Provider. These can be called as follows.
+The BladeOne class has a large selection of Static and regular methods, these can all be accessed from BladeOne_Engine. These can be called as follows.
 ```php
 // None static
 $this->view->engine()->some_method($data);
 
 // As static 
-BladeOne_Provider::some_method($data);
+BladeOne_Engine::some_method($data);
 ```
 > For the complete list of methods, please visit https://github.com/EFTEC/BladeOne/wiki/Methods-of-the-class
 
@@ -349,7 +349,7 @@ BladeOne_Provider::some_method($data);
 // Using the App's View method to access none static methods on the fly.
 App::view()->engine()->some_method($data);
 ```
-> calling` engine()` on view, will return the underlying rendering engine used, in this case the BladeOne_Provider. 
+> calling` engine()` on view, will return the underlying rendering engine used, in this case the BladeOne_Engine. 
 
 > Of course you can set the engine it self as a global variable using `$provider->share('view_helper', [App::view(), 'engine'])`. Then you can use `{$view_helper->some_method(\$data)}` in your view.
 
@@ -398,9 +398,9 @@ http://www.opensource.org/licenses/mit-license.html
 
 ## Previous Perique Support ##
 
-* For support of Perique 1.3.\* please use BladeOne_Provider 1.3.\*
-* For support of all versions from 0.5.\* - 1.1.\* please use BladeOne_Provider 1.2.\*
-* For support of the initial PinkCrab Plugin Frameworks (version 0.2.\* -> 0.4.\*) please use BladeOne_Provider 1.0.3
+* For support of Perique 1.3.\* please use BladeOne_Engine 1.3.\*
+* For support of all versions from 0.5.\* - 1.1.\* please use BladeOne_Engine 1.2.\*
+* For support of the initial PinkCrab Plugin Frameworks (version 0.2.\* -> 0.4.\*) please use BladeOne_Engine 1.0.3
 
 ## Change Log ##
 * 1.4.1 - Fix issue where paths are not correctly assumed if not passed via Bootstrap::use()

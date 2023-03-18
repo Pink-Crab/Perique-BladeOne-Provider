@@ -19,7 +19,7 @@ declare( strict_types=1 );
  *
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\BladeOne_Provider
+ * @package PinkCrab\BladeOne_Engine
  */
 
 namespace PinkCrab\BladeOne;
@@ -35,7 +35,7 @@ use PinkCrab\Perique\Services\View\View_Model;
 use PinkCrab\Perique\Services\View\Component\Component;
 use PinkCrab\Perique\Services\View\Component\Component_Compiler;
 
-class BladeOne_Provider implements Renderable {
+class BladeOne_Engine implements Renderable {
 
 	/**
 	 * BladeOne Instance

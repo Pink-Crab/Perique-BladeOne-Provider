@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PinkCrab\BladeOne\Tests\Fixtures;
 
-use PinkCrab\BladeOne\BladeOne_Provider;
+use PinkCrab\BladeOne\BladeOne_Engine;
 use PinkCrab\BladeOne\Abstract_BladeOne_Config;
 use PinkCrab\BladeOne\Tests\Fixtures\Mock_Service;
 
@@ -25,7 +25,7 @@ class Mock_Blade_Config extends Abstract_BladeOne_Config {
 		$this->service = $service;
 	}
 
-	public function config( BladeOne_Provider $bladeOne ): void {
+	public function config( BladeOne_Engine $bladeOne ): void {
 		$bladeOne->set_compiled_extension( $this->service->get_cache_file_extension() );
 		$bladeOne->directive( 'test', '__return_true' );
 		$bladeOne->allow_pipe( false );

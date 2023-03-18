@@ -19,7 +19,7 @@ declare( strict_types=1 );
  *
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\BladeOne_Provider
+ * @package PinkCrab\BladeOne_Engine
  */
 
 namespace PinkCrab\BladeOne;
@@ -27,9 +27,9 @@ namespace PinkCrab\BladeOne;
 use Dice\Dice;
 use PinkCrab\Loader\Hook_Loader;
 use eftec\bladeone\BladeOne as Blade;
+use PinkCrab\BladeOne\BladeOne_Engine;
 use PinkCrab\Perique\Application\Hooks;
 use PinkCrab\Perique\Interfaces\Module;
-use PinkCrab\BladeOne\BladeOne_Provider;
 use PinkCrab\BladeOne\PinkCrab_BladeOne;
 use PinkCrab\Perique\Interfaces\Renderable;
 use PinkCrab\Perique\Application\App_Config;
@@ -42,8 +42,7 @@ class BladeOne implements Module {
 	private ?string $template_path = null;
 	private ?string $compiled_path = null;
 	private int $mode              = PinkCrab_BladeOne::MODE_AUTO;
-	private string $blade          = PinkCrab_BladeOne::class;
-	/** @var ?\Closure(BladeOne_Provider):BladeOne_Provider */
+	/** @var ?\Closure(BladeOne_Engine):BladeOne_Engine */
 	private $config = null;
 
 	/**
@@ -82,7 +81,7 @@ class BladeOne implements Module {
 	/**
 	 * Provider config.
 	 *
-	 * @param \Closure(BladeOne_Provider):BladeOne_Provider $config
+	 * @param \Closure(BladeOne_Engine):BladeOne_Engine $config
 	 * @return self
 	 */
 	public function config( \Closure $config ): self {
@@ -91,23 +90,8 @@ class BladeOne implements Module {
 	}
 
 	/**
-	 * Set the blade class.
-	 *
-	 * @param class-string<Blade> $blade
-	 * @return self
-	 */
-	public function blade( string $blade ): self {
-		// Must be an instance of Blade or a child of Blade.
-		if ( ! is_subclass_of( $blade, Blade::class ) ) {
-			throw new \InvalidArgumentException( 'BladeOne must be an instance of eftec\bladeone\BladeOne or a child of eftec\bladeone\BladeOne' );
-		}
-
-		$this->blade = $blade;
-		return $this;
-	}
-
-	/**
-	 * Callback fired before the Application is booted.
+	 * Creates the shared instance of the module and defines the
+	 * DI Rules to use the BladeOne_Engine.
 	 *
 	 * @pram App_Config $config
 	 * @pram Hook_Loader $loader
@@ -115,75 +99,74 @@ class BladeOne implements Module {
 	 * @return void
 	 */
 	public function pre_boot( App_Config $config, Hook_Loader $loader, DI_Container $di_container ): void {
-		add_filter(
-			Hooks::APP_INIT_SET_DI_RULES,
-			function( $rules ) use ( $config ) {
 
-				// Unset the global PHP_Engine useage.
-				if ( array_key_exists( '*', $rules )
-				&& array_key_exists( 'substitutions', $rules['*'] )
-				&& array_key_exists( Renderable::class, $rules['*']['substitutions'] )
-				&& is_a( $rules['*']['substitutions'][ Renderable::class ], PHP_Engine::class ) ) {
-
-					// If template path is not set, get from renderable.
-					if ( is_null( $this->template_path ) ) {
-						$this->template_path = $rules['*']['substitutions'][ Renderable::class ]->base_view_path();
-					}
-					unset( $rules['*']['substitutions'][ Renderable::class ] );
-				}
-
-				// If there is no compiled path, set to to uploads.
-				if ( is_null( $this->compiled_path ) ) {
-					$this->compiled_path = sprintf(
-						'%1$s%2$scompiled%2$sblade',
-						$config->path( 'upload_root' ),
-						\DIRECTORY_SEPARATOR
-					);
-				}
-
-				// Get the version of Blade to start.
-				$blade = $this->blade;
-
-				$rules[ BladeOne_Provider::class ] = array(
-					'substitutions' => array(
-						PinkCrab_BladeOne::class => new $blade( $this->template_path, $this->compiled_path, $this->mode ),
-					),
-					'call'          => array(
-						array( 'allow_pipe', array() ),
-					),
-				);
-
-				$rules[ Renderable::class ] = array(
-					'instanceOf' => BladeOne_Provider::class,
-					'shared'     => true,
-				);
-
-				$rules[ Abstract_BladeOne_Config::class ] = array(
-					'call' => array(
-						array( 'set_renderable', array( array( Dice::INSTANCE => Renderable::class ) ) ),
-					),
-				);
-
-				return $rules;
-			}
+		$wp_upload_dir = wp_upload_dir();
+		$compiled_path = $this->compiled_path ?? sprintf( '%1$s%2$sblade-cache', $wp_upload_dir['basedir'], \DIRECTORY_SEPARATOR );
+		$instance = new PinkCrab_BladeOne(
+			$this->template_path ?? $config->path( 'view' ),
+			$compiled_path,
+			$this->mode
 		);
+
+		// Create the compilled path if it does not exist.
+		if ( ! \file_exists( $compiled_path ) ) {
+			mkdir( $compiled_path );
+		}
+
+		$di_container->addRule(
+			BladeOne_Engine::class,
+			array(
+				'constructParams' => array(
+					$instance,
+				),
+				'call'            => array(
+					array( 'allow_pipe', array() ),
+				),
+			)
+		);
+
+		$di_container->addRule(
+			Renderable::class,
+			array(
+				'instanceOf' => BladeOne_Engine::class,
+				'shared'     => true,
+			)
+		);
+
+		$di_container->addRule(
+			View::class,
+			array(
+				'substitutions' => array(
+					Renderable::class => BladeOne_Engine::class,
+				),
+			)
+		);
+
 	}
 
-	## Unused methods
-
-	/** @inheritDoc */
+	/**
+	 * Allows for the config to be passed to the provider, before its used.
+	 *
+	 * @pram App_Config $config
+	 * @pram Hook_Loader $loader
+	 * @pram DI_Container $di_container
+	 * @return void
+	 */
 	public function pre_register( App_Config $config, Hook_Loader $loader, DI_Container $di_container ): void {
 
 		// Pass the config to the provider, if set.
 		if ( ! is_null( $this->config ) ) {
 			$provider = $di_container->create( Renderable::class );
 
-			// if we have an instance of BladeOne_Provider, pass the config.
-			if ( $provider instanceof BladeOne_Provider ) {
+			// if we have an instance of BladeOne_Engine, pass the config.
+			if ( $provider instanceof BladeOne_Engine ) {
 				\call_user_func( $this->config, $provider );
 			}
 		}
 	}
+
+	## Unused methods
+
 
 	/** @inheritDoc */
 	public function post_register( App_Config $config, Hook_Loader $loader, DI_Container $di_container ): void {}

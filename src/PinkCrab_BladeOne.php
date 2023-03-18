@@ -19,7 +19,7 @@ declare( strict_types=1 );
  *
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\BladeOne_Provider
+ * @package PinkCrab\BladeOne_Engine
  */
 
 namespace PinkCrab\BladeOne;

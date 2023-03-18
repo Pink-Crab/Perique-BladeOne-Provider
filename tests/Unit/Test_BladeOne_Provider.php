@@ -11,32 +11,34 @@ declare(strict_types=1);
  * @package PinkCrab\BladeOne
  */
 
-namespace PinkCrab\BladeOne\Tests;
+namespace PinkCrab\BladeOne\Tests\Unit;
 
 use WP_UnitTestCase;
 use BadMethodCallException;
 use eftec\bladeone\BladeOne;
 use Gin0115\WPUnit_Helpers\Objects;
-use PinkCrab\BladeOne\BladeOne_Provider;
-use PinkCrab\BladeOne\PinkCrab_BladeOne;
+use PinkCrab\BladeOne\BladeOne_Engine;
 use PinkCrab\Perique\Services\View\View;
 use PinkCrab\BladeOne\Tests\Fixtures\Input;
 use PinkCrab\Perique\Services\View\View_Model;
 use PinkCrab\Perique\Services\View\Component\Component_Compiler;
 
-class Test_BladeOne_Provider extends WP_UnitTestCase {
+/**
+ * @group unit
+ */
+class Test_BladeOne_Engine extends WP_UnitTestCase {
 
 	protected static $blade;
 
-	public function setUp(): void {
-		parent::setup();
-		static::$blade = $this->get_provider();
+	public function set_Up(): void {
+		parent::set_up();
+		static::$blade = $this->get_engine();
 	}
 
-	public function get_provider(): BladeOne_Provider {
-		$cache = \dirname( __FILE__ ) . '/files/cache';
-		$views = \dirname( __FILE__ ) . '/files/views';
-		return BladeOne_Provider::init( $views, $cache, 5 );
+	public function get_engine(): BladeOne_Engine {
+		$cache = \dirname( __FILE__, 2 ) . '/files/cache';
+		$views = \dirname( __FILE__, 2 ) . '/files/views';
+		return BladeOne_Engine::init( $views, $cache, 5 );
 	}
 
 	/**
@@ -45,7 +47,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_can_construct_from_provider(): void {
-		$this->assertInstanceOf( BladeOne_Provider::class, static::$blade );
+		$this->assertInstanceOf( BladeOne_Engine::class, static::$blade );
 	}
 
 	/**
@@ -153,7 +155,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to define if blade templates should be allowed to pipe values through callables. */
 	public function test_allow_pipe(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 
 		// Inferred as true.
 		$provider->allow_pipe();
@@ -170,7 +172,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to define a blade directive from the provider. */
 	public function test_add_directive(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->directive(
 			'foo',
 			function( $expression ) {
@@ -185,7 +187,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to define a blade directive from the provider. */
 	public function test_add_directive_rt(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->directive_rt(
 			'bar',
 			function( $expression ) {
@@ -200,7 +202,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to define an include alias from the provider */
 	public function test_add_include(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->add_include( 'view.admin.bar', 'adminBar' );
 		$blade      = $provider->get_blade();
 		$directives = Objects::get_property( $blade, 'customDirectives' );
@@ -216,16 +218,16 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to set a class alias from the provider */
 	public function test_add_alias_class(): void {
-		$provider = $this->get_provider();
-		$provider->add_alias_classes( 'self', BladeOne_Provider::class );
+		$provider = $this->get_engine();
+		$provider->add_alias_classes( 'self', BladeOne_Engine::class );
 		$blade = $provider->get_blade();
-		$this->assertEquals( BladeOne_Provider::class, $blade->aliasClasses['self'] );
+		$this->assertEquals( BladeOne_Engine::class, $blade->aliasClasses['self'] );
 		$this->assertArrayHasKey( 'self', $blade->aliasClasses );
 	}
 
 	/** @testdox It should be possible to set the mode blade renders using. */
 	public function test_set_mode(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->set_mode( BladeOne::MODE_AUTO );
 		$this->assertEquals( 0, $provider->get_blade()->getMode() );
 
@@ -241,7 +243,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to share a value globally between al templates. */
 	public function test_share(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->share( 'foo', 'bar' );
 		$blade = $provider->get_blade();
 
@@ -251,7 +253,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to set a resolver for injecting into bladeone */
 	public function test_set_inject_resolver(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->set_inject_resolver( '__return_false' );
 		$blade = $provider->get_blade();
 		$this->assertEquals( '__return_false', Objects::get_property( $blade, 'injectResolver' ) );
@@ -259,14 +261,14 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to set a custom file extension for templates from the provider */
 	public function test_set_file_extension(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->set_file_extension( '.tree' );
 		$this->assertEquals( '.tree', $provider->get_blade()->getFileExtension() );
 	}
 
 	/** @testdox It should be possible to set a custom file extension for compiled views from the provider */
 	public function test_set_compiled_extension(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->set_compiled_extension( '.bar' );
 		$this->assertEquals( '.bar', $provider->get_blade()->getCompiledExtension() );
 	}
@@ -274,7 +276,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 	/** @testdox It should be possible to render a Component */
 	public function test_can_render_component(): void {
 		$compiler = new Component_Compiler( 'components' );
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->set_component_compiler( $compiler );
 
 		$input = $provider->component(
@@ -295,7 +297,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox It should be possible to render a View Model */
 	public function test_can_render_view_model(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 
 		$input = $provider->view_model(
 			new View_Model(
@@ -318,7 +320,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox An exception should be thrown attempting to render a component with the compiler being set to the provider. */
 	public function test_exception_rendering_component_with_compiler_set(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 
 		$this->expectException( \Exception::class );
 		$this->expectExceptionMessage( 'No component compiler passed to BladeOne' );
@@ -336,7 +338,7 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 
 	/** @testdox When calling BladeOne::e() the custom esc function should be called. */
 	public function test_esc_function_called_when_calling_bladeone_e(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 		$provider->set_esc_function( 'foo_esc' );
 		$blade = $provider->get_blade();
 
@@ -355,12 +357,12 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 		$this->expectException( \Exception::class );
 		$this->expectExceptionMessage( 'Invalid esc function provided' );
 
-		$this->get_provider()->set_esc_function( 'foo' );
+		$this->get_engine()->set_esc_function( 'foo' );
 	}
 
 	/** @testdox By default the viewModel and component directives should be included. */
 	public function test_view_model_and_component_directives_included_by_default(): void {
-		$provider = $this->get_provider();
+		$provider = $this->get_engine();
 
 		$blade = $provider->get_blade();
 		$this->assertArrayHasKey( 'component', Objects::get_property( $blade, 'customDirectivesRT' ) );
@@ -370,15 +372,15 @@ class Test_BladeOne_Provider extends WP_UnitTestCase {
 	/** @testdox It should be possible to get the view base path if defined as a single value or first of an array */
 	public function test_get_view_base_path(): void {
 		// Single path
-		$this->assertEquals( 'foo.bar', BladeOne_Provider::init('foo.bar')->base_view_path() );
+		$this->assertEquals( 'foo.bar', BladeOne_Engine::init('foo.bar')->base_view_path() );
 
 		// Array of paths
-		$this->assertEquals( 'bar.foo', BladeOne_Provider::init( array( 'bar.foo', 'foo.bar' ) )->base_view_path() );
+		$this->assertEquals( 'bar.foo', BladeOne_Engine::init( array( 'bar.foo', 'foo.bar' ) )->base_view_path() );
 	}
 
 	/** @testdox It should be possible to access all paths used for templates. */
 	public function test_get_view_paths(): void {
-		$blade = BladeOne_Provider::init( array( 'bar.foo', 'foo.bar' ) );
+		$blade = BladeOne_Engine::init( array( 'bar.foo', 'foo.bar' ) );
 		$paths = $blade->get_blade()->get_template_paths();
 
 		$this->assertIsArray( $paths );

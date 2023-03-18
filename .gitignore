@@ -9,3 +9,4 @@ compiles
 .phpunit.result.cache
 tests/.env
 .vscode
+plugin.php
